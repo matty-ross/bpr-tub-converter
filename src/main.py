@@ -1,6 +1,6 @@
-import bnd2
+def main() -> None:
+    pass
 
 
-b = bnd2.BundleV2('test.bundle')
-b.load()
-b.save()
+if __name__ == '__main__':
+    main()
