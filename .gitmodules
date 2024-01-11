@@ -1,0 +1,3 @@
+[submodule "src/bnd2"]
+	path = src/bnd2
+	url = https://github.com/matty-ross/bnd2.git
