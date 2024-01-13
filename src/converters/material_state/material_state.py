@@ -7,6 +7,36 @@ import d3d9
 import d3d11
 
 
+BLEND_MAP = {
+    d3d9.Blend.ZERO: d3d11.Blend.ZERO,
+    d3d9.Blend.ONE: d3d11.Blend.ONE,
+    d3d9.Blend.SRC_COLOR: d3d11.Blend.SRC_COLOR,
+    d3d9.Blend.INV_SRC_COLOR: d3d11.Blend.INV_SRC_COLOR,
+    d3d9.Blend.SRC_ALPHA: d3d11.Blend.SRC_ALPHA,
+    d3d9.Blend.INV_SRC_ALPHA: d3d11.Blend.INV_SRC_ALPHA,
+    d3d9.Blend.DEST_ALPHA: d3d11.Blend.DEST_ALPHA,
+    d3d9.Blend.INV_DEST_ALPHA: d3d11.Blend.INV_DEST_ALPHA,
+    d3d9.Blend.DEST_COLOR: d3d11.Blend.DEST_COLOR,
+    d3d9.Blend.INV_DEST_COLOR: d3d11.Blend.INV_DEST_COLOR,
+    d3d9.Blend.SRC_ALPHA_SAT: d3d11.Blend.SRC_ALPHA_SAT,
+    # d3d9.Blend.BOTH_SRC_ALPHA: d3d11.Blend.,
+    # d3d9.Blend.BOTH_INV_SRC_ALPHA: d3d11.Blend.,
+    d3d9.Blend.BLEND_FACTOR: d3d11.Blend.BLEND_FACTOR,
+    d3d9.Blend.INV_BLEND_FACTOR: d3d11.Blend.INV_BLEND_FACTOR,
+    # d3d9.Blend.SRC_COLOR_2: d3d11.Blend.,
+    # d3d9.Blend.INV_SRC_COLOR_2: d3d11.Blend.,
+}
+
+
+BLEND_OPERATION_MAP = {
+    d3d9.BlendOperation.ADD: d3d11.BlendOperation.ADD,
+    d3d9.BlendOperation.SUBTRACT: d3d11.BlendOperation.SUBTRACT,
+    d3d9.BlendOperation.REV_SUBTRACT: d3d11.BlendOperation.REV_SUBTRACT,
+    d3d9.BlendOperation.MIN: d3d11.BlendOperation.MIN,
+    d3d9.BlendOperation.MAX: d3d11.BlendOperation.MAX,
+}
+
+
 COMPARSION_FUNCTION_MAP = {
     d3d9.ComparsionFunction.NEVER: d3d11.ComparsionFunction.NEVER,
     d3d9.ComparsionFunction.LESS: d3d11.ComparsionFunction.LESS,
@@ -114,4 +144,4 @@ class MaterialState:
     
 
     def _set_d3d11(self, d3d11_material_state: d3d11.MaterialState) -> None:
-        data = io.BytesIO()
+        pass
