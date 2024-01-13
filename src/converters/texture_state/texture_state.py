@@ -25,7 +25,7 @@ TEXTURE_FILTER_TYPE_MAP = {
 class TextureState:
 
     def __init__(self, resource_entry: bnd2.ResourceEntry):
-        assert resource_entry.type == 0xE, f"Resource entry with ID {resource_entry.id :08X} isn't TextureState."
+        assert resource_entry.type == 14, f"Resource entry with ID {resource_entry.id :08X} isn't TextureState."
         self.resource_entry: bnd2.ResourceEntry = resource_entry
     
     
