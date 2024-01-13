@@ -25,10 +25,11 @@ TEXTURE_FILTER_TYPE_MAP = {
 class TextureState:
 
     def __init__(self, resource_entry: bnd2.ResourceEntry):
+        assert resource_entry.type == 0xE, f"Resource entry with ID {resource_entry.id :08X} isn't TextureState."
         self.resource_entry: bnd2.ResourceEntry = resource_entry
     
     
-    def convert(self) -> d3d11.TextureState:
+    def convert(self) -> None:
         d3d9_texture_state = self._get_d3d9()
         d3d11_texture_state = d3d11.TextureState()
 
@@ -85,6 +86,9 @@ class TextureState:
         
         data.seek(0x30)
         data.write(struct.pack('<L', 1))
+        data.write(struct.pack('<L', 0))
+        
+        self.resource_entry.import_entries[0].offset = data.tell()
         data.write(struct.pack('<L', 0))
 
         self.resource_entry.data[0] = data.getvalue()
