@@ -77,7 +77,7 @@ class RenderTargetBlendState:
 
 @dataclass
 class BlendState:
-    render_target_blend_states = list[RenderTargetBlendState]
+    render_target_blend_states: list[RenderTargetBlendState] = None
     blend_factor: tuple[float, float, float, float] = None
     alpha_to_coverage_enable: bool = None
     independent_blend_enable: bool = None
