@@ -8,7 +8,7 @@ class TextureType(Enum):
     VOLUME_TEXTURE = 2
 
 
-class TextureFormat(Enum):
+class Format(Enum):
     UNKNOWN = 0
     R8G8B8 = 20
     A8R8G8B8 = 21
@@ -76,11 +76,10 @@ class TextureFormat(Enum):
     BINARYBUFFER = 199
 
 
-
 @dataclass
 class Texture:
     data_offset: int = None
-    format: TextureFormat = None
+    format: Format = None
     width: int = None
     height: int = None
     depth: int = None
