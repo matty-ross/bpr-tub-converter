@@ -82,7 +82,6 @@ class TextureState:
         data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.mipmap_lod_bias))
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.comparsion_function))
         data.write(struct.pack('?', self.d3d11_texture_state.sampler_state.use_border_color))
-        
         data.seek(0x30)
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))
