@@ -7,6 +7,18 @@ import d3d9
 import d3d11
 
 
+TEXTURE_TYPE_MAP = {
+    d3d9.TextureType.TEXTURE: d3d11.TextureType.TEXTURE_2D,
+    d3d9.TextureType.CUBE_TEXTURE: d3d11.TextureType.TEXTURE_1D,
+    d3d9.TextureType.VOLUME_TEXTURE: d3d11.TextureType.TEXTURE_3D,
+}
+
+
+FORMAT_MAP = {
+    # TODO
+}
+
+
 class Texture:
 
     def __init__(self, resource_entry: bnd2.ResourceEntry):
@@ -18,7 +30,20 @@ class Texture:
 
 
     def convert(self) -> None:
-        pass
+        self._load()
+        
+        self.d3d11_texture.usage = d3d11.Usage.DEFAULT
+        self.d3d11_texture.type = TEXTURE_TYPE_MAP.get(self.d3d9_texture.type)
+        self.d3d11_texture.data_offset = self.d3d9_texture.data_offset
+        self.d3d11_texture.format = FORMAT_MAP.get(self.d3d9_texture.format)
+        self.d3d11_texture.width = self.d3d9_texture.width
+        self.d3d11_texture.height = self.d3d9_texture.height
+        self.d3d11_texture.depth = self.d3d9_texture.depth
+        self.d3d11_texture.count = 1
+        self.d3d11_texture.most_detailed_mipmap_level = 0
+        self.d3d11_texture.mipmap_levels_count = self.d3d9_texture.mipmap_levels_count
+
+        self._store()
 
 
     def _load(self) -> None:
