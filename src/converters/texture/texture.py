@@ -98,9 +98,9 @@ class Texture:
         self._load()
         
         self.d3d11_texture.usage = d3d11.Usage.DEFAULT
-        self.d3d11_texture.type = TEXTURE_TYPE_MAP.get(self.d3d9_texture.type)
+        self.d3d11_texture.type = TEXTURE_TYPE_MAP[self.d3d9_texture.type]
         self.d3d11_texture.data_offset = self.d3d9_texture.data_offset
-        self.d3d11_texture.format = FORMAT_MAP.get(self.d3d9_texture.format)
+        self.d3d11_texture.format = FORMAT_MAP[self.d3d9_texture.format]
         self.d3d11_texture.width = self.d3d9_texture.width
         self.d3d11_texture.height = self.d3d9_texture.height
         self.d3d11_texture.depth = self.d3d9_texture.depth
