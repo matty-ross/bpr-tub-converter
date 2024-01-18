@@ -89,27 +89,27 @@ class MaterialState:
         for _ in range(8):
             render_target_blend_state = d3d11.RenderTargetBlendState()
             render_target_blend_state.blend_enable = self.d3d9_material_state.blend_state.alpha_blend_enable
-            render_target_blend_state.source_blend = BLEND_MAP.get(self.d3d9_material_state.blend_state.source_blend, d3d11.Blend.SRC_ALPHA)
-            render_target_blend_state.destination_blend = BLEND_MAP.get(self.d3d9_material_state.blend_state.destination_blend, d3d11.Blend.INV_SRC_ALPHA)
-            render_target_blend_state.blend_oepration = BLEND_OPERATION_MAP.get(self.d3d9_material_state.blend_state.blend_oepration, d3d11.BlendOperation.ADD)
-            render_target_blend_state.source_blend_alpha = BLEND_MAP.get(self.d3d9_material_state.blend_state.source_blend_alpha, d3d11.Blend.SRC_ALPHA)
-            render_target_blend_state.destination_blend_alpha = BLEND_MAP.get(self.d3d9_material_state.blend_state.destination_blend_alpha, d3d11.Blend.INV_SRC_ALPHA)
-            render_target_blend_state.blend_operation_alpha = BLEND_OPERATION_MAP.get(self.d3d9_material_state.blend_state.blend_operation_alpha, d3d11.BlendOperation.ADD)
+            render_target_blend_state.source_blend = BLEND_MAP[self.d3d9_material_state.blend_state.source_blend]
+            render_target_blend_state.destination_blend = BLEND_MAP[self.d3d9_material_state.blend_state.destination_blend]
+            render_target_blend_state.blend_oepration = BLEND_OPERATION_MAP[self.d3d9_material_state.blend_state.blend_oepration]
+            render_target_blend_state.source_blend_alpha = BLEND_MAP[self.d3d9_material_state.blend_state.source_blend_alpha]
+            render_target_blend_state.destination_blend_alpha = BLEND_MAP[self.d3d9_material_state.blend_state.destination_blend_alpha]
+            render_target_blend_state.blend_operation_alpha = BLEND_OPERATION_MAP[self.d3d9_material_state.blend_state.blend_operation_alpha]
             render_target_blend_state.color_write_mask = self.d3d9_material_state.blend_state.color_write_enable[0]
             self.d3d11_material_state.blend_state.render_target_blend_states.append(render_target_blend_state)
         self.d3d11_material_state.blend_state.blend_factor = self.d3d9_material_state.blend_state.blend_factor
         self.d3d11_material_state.blend_state.alpha_to_coverage_enable = self.d3d9_material_state.blend_state.alpha_to_coverage_enable
         self.d3d11_material_state.blend_state.independent_blend_enable = self.d3d9_material_state.blend_state.separate_alpha_blend_enable
 
-        self.d3d11_material_state.depth_stencil_state.depth_function = COMPARSION_FUNCTION_MAP.get(self.d3d9_material_state.depth_stencil_state.z_function, d3d11.ComparsionFunction.LESS_EQUAL)
-        self.d3d11_material_state.depth_stencil_state.front_face_stencil_fail_operation = STENCIL_OPERATION_MAP.get(self.d3d9_material_state.depth_stencil_state.stencil_fail_operation, d3d11.StencilOperation.KEEP)
-        self.d3d11_material_state.depth_stencil_state.front_face_stencil_depth_fail_operation = STENCIL_OPERATION_MAP.get(self.d3d9_material_state.depth_stencil_state.stencil_z_fail_operation, d3d11.StencilOperation.KEEP)
-        self.d3d11_material_state.depth_stencil_state.front_face_stencil_pass_operation = STENCIL_OPERATION_MAP.get(self.d3d9_material_state.depth_stencil_state.stencil_pass_operation, d3d11.StencilOperation.KEEP)
-        self.d3d11_material_state.depth_stencil_state.front_face_stencil_function = COMPARSION_FUNCTION_MAP.get(self.d3d9_material_state.depth_stencil_state.stencil_function, d3d11.ComparsionFunction.ALWAYS)
-        self.d3d11_material_state.depth_stencil_state.back_face_stencil_fail_operation = STENCIL_OPERATION_MAP.get(self.d3d9_material_state.depth_stencil_state.ccw_stencil_fail_operation, d3d11.StencilOperation.KEEP)
-        self.d3d11_material_state.depth_stencil_state.back_face_stencil_depth_fail_operation = STENCIL_OPERATION_MAP.get(self.d3d9_material_state.depth_stencil_state.ccw_stencil_z_fail_operation, d3d11.StencilOperation.KEEP)
-        self.d3d11_material_state.depth_stencil_state.back_face_stencil_pass_operation = STENCIL_OPERATION_MAP.get(self.d3d9_material_state.depth_stencil_state.ccw_stencil_pass_operation, d3d11.StencilOperation.KEEP)
-        self.d3d11_material_state.depth_stencil_state.back_face_stencil_function = COMPARSION_FUNCTION_MAP.get(self.d3d9_material_state.depth_stencil_state.ccw_stencil_function, d3d11.ComparsionFunction.ALWAYS)
+        self.d3d11_material_state.depth_stencil_state.depth_function = COMPARSION_FUNCTION_MAP[self.d3d9_material_state.depth_stencil_state.z_function]
+        self.d3d11_material_state.depth_stencil_state.front_face_stencil_fail_operation = STENCIL_OPERATION_MAP[self.d3d9_material_state.depth_stencil_state.stencil_fail_operation]
+        self.d3d11_material_state.depth_stencil_state.front_face_stencil_depth_fail_operation = STENCIL_OPERATION_MAP[self.d3d9_material_state.depth_stencil_state.stencil_z_fail_operation]
+        self.d3d11_material_state.depth_stencil_state.front_face_stencil_pass_operation = STENCIL_OPERATION_MAP[self.d3d9_material_state.depth_stencil_state.stencil_pass_operation]
+        self.d3d11_material_state.depth_stencil_state.front_face_stencil_function = COMPARSION_FUNCTION_MAP[self.d3d9_material_state.depth_stencil_state.stencil_function]
+        self.d3d11_material_state.depth_stencil_state.back_face_stencil_fail_operation = STENCIL_OPERATION_MAP[self.d3d9_material_state.depth_stencil_state.ccw_stencil_fail_operation]
+        self.d3d11_material_state.depth_stencil_state.back_face_stencil_depth_fail_operation = STENCIL_OPERATION_MAP[self.d3d9_material_state.depth_stencil_state.ccw_stencil_z_fail_operation]
+        self.d3d11_material_state.depth_stencil_state.back_face_stencil_pass_operation = STENCIL_OPERATION_MAP[self.d3d9_material_state.depth_stencil_state.ccw_stencil_pass_operation]
+        self.d3d11_material_state.depth_stencil_state.back_face_stencil_function = COMPARSION_FUNCTION_MAP[self.d3d9_material_state.depth_stencil_state.ccw_stencil_function]
         self.d3d11_material_state.depth_stencil_state.stencil_reference = self.d3d9_material_state.depth_stencil_state.stencil_reference
         self.d3d11_material_state.depth_stencil_state.stencil_read_mask = self.d3d9_material_state.depth_stencil_state.stencil_mask
         self.d3d11_material_state.depth_stencil_state.stencil_write_mask = self.d3d9_material_state.depth_stencil_state.stencil_write_mask
@@ -117,8 +117,8 @@ class MaterialState:
         self.d3d11_material_state.depth_stencil_state.depth_write_enable = self.d3d9_material_state.depth_stencil_state.z_write_enable
         self.d3d11_material_state.depth_stencil_state.stencil_enable = self.d3d9_material_state.depth_stencil_state.stencil_enable
 
-        self.d3d11_material_state.rasterizer_state.fill_mode = FILL_MODE_MAP.get(self.d3d9_material_state.rasterizer_state.fill_mode, d3d11.FillMode.SOLID)
-        self.d3d11_material_state.rasterizer_state.cull_mode = CULL_MODE_MAP.get(self.d3d9_material_state.rasterizer_state.cull_mode, d3d11.CullMode.NONE)
+        self.d3d11_material_state.rasterizer_state.fill_mode = FILL_MODE_MAP[self.d3d9_material_state.rasterizer_state.fill_mode]
+        self.d3d11_material_state.rasterizer_state.cull_mode = CULL_MODE_MAP[self.d3d9_material_state.rasterizer_state.cull_mode]
         self.d3d11_material_state.rasterizer_state.front_face = 1
         self.d3d11_material_state.rasterizer_state.depth_bias = int(self.d3d9_material_state.rasterizer_state.depth_bias)
         self.d3d11_material_state.rasterizer_state.depth_bias_clamp = 0.0
