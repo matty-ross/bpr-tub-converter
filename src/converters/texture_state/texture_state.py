@@ -35,12 +35,12 @@ class TextureState:
     def convert(self) -> None:
         self._load()
 
-        self.d3d11_texture_state.sampler_state.address_mode_u = TEXTURE_ADDRESS_MODE_MAP.get(self.d3d9_texture_state.sampler_state.address_mode_u, d3d11.TextureAddressMode.WRAP)
-        self.d3d11_texture_state.sampler_state.address_mode_v = TEXTURE_ADDRESS_MODE_MAP.get(self.d3d9_texture_state.sampler_state.address_mode_v, d3d11.TextureAddressMode.WRAP)
-        self.d3d11_texture_state.sampler_state.address_mode_w = TEXTURE_ADDRESS_MODE_MAP.get(self.d3d9_texture_state.sampler_state.address_mode_w, d3d11.TextureAddressMode.WRAP)
-        self.d3d11_texture_state.sampler_state.magnification_filter = TEXTURE_FILTER_TYPE_MAP.get(self.d3d9_texture_state.sampler_state.magnification_filter, d3d11.TextureFilterType.POINT)
-        self.d3d11_texture_state.sampler_state.minification_filter = TEXTURE_FILTER_TYPE_MAP.get(self.d3d9_texture_state.sampler_state.minification_filter, d3d11.TextureFilterType.POINT)
-        self.d3d11_texture_state.sampler_state.mipmap_filter = TEXTURE_FILTER_TYPE_MAP.get(self.d3d9_texture_state.sampler_state.mipmap_filter, d3d11.TextureFilterType.POINT)
+        self.d3d11_texture_state.sampler_state.address_mode_u = TEXTURE_ADDRESS_MODE_MAP[self.d3d9_texture_state.sampler_state.address_mode_u]
+        self.d3d11_texture_state.sampler_state.address_mode_v = TEXTURE_ADDRESS_MODE_MAP[self.d3d9_texture_state.sampler_state.address_mode_v]
+        self.d3d11_texture_state.sampler_state.address_mode_w = TEXTURE_ADDRESS_MODE_MAP[self.d3d9_texture_state.sampler_state.address_mode_w]
+        self.d3d11_texture_state.sampler_state.magnification_filter = TEXTURE_FILTER_TYPE_MAP[self.d3d9_texture_state.sampler_state.magnification_filter]
+        self.d3d11_texture_state.sampler_state.minification_filter = TEXTURE_FILTER_TYPE_MAP[self.d3d9_texture_state.sampler_state.minification_filter]
+        self.d3d11_texture_state.sampler_state.mipmap_filter = TEXTURE_FILTER_TYPE_MAP[self.d3d9_texture_state.sampler_state.mipmap_filter]
         self.d3d11_texture_state.sampler_state.min_lod = struct.unpack('<f', b'\xFF\xFF\x7F\xFF')[0] # -FLT_MAX
         self.d3d11_texture_state.sampler_state.max_lod = struct.unpack('<f', b'\xFF\xFF\x7F\x7F')[0] # FLT_MAX
         self.d3d11_texture_state.sampler_state.max_anisotropy = self.d3d9_texture_state.sampler_state.max_anisotropy
