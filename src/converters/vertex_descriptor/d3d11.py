@@ -3,26 +3,25 @@ from enum import Enum
 
 
 class SemanticName(Enum):
-    # NONE = 0
-    # POSITION = 1
-    # POSITIONT = 2
-    # NORMAL = 3
-    # COLOR = 4
-    # TEXCOORD = 5
-    # TEXCOORD = 6
-    # TEXCOORD = 7
-    # TEXCOORD = 8
-    # TEXCOORD = 9
-    # TEXCOORD = 10
-    # TEXCOORD = 11
-    # TEXCOORD = 12
-    # BLENDINDICES = 13
-    # BLENDWEIGHT = 14
-    # TANGENT = 15
-    # BINORMAL = 16
-    # COLOR = 17
-    # PSIZE = 18
-    pass
+    NONE = 0
+    POSITION = 1
+    POSITIONT = 2
+    NORMAL = 3
+    COLOR0 = 4
+    TEXCOORD0 = 5
+    TEXCOORD1 = 6
+    TEXCOORD2 = 7
+    TEXCOORD3 = 8
+    TEXCOORD4 = 9
+    TEXCOORD5 = 10
+    TEXCOORD6 = 11
+    TEXCOORD7 = 12
+    BLENDINDICES = 13
+    BLENDWEIGHT = 14
+    TANGENT = 15
+    BINORMAL = 16
+    COLOR1 = 17
+    PSIZE = 18
 
 
 class InputClassification(Enum):
