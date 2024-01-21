@@ -64,6 +64,7 @@ class Element:
 
 @dataclass
 class VertexDescriptor:
+    elements_hash: int = None
     elements_count: int = None
     streams_count: int = None
     elements: list[Element] = None
