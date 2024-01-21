@@ -18,7 +18,16 @@ class VertexDescriptor:
 
 
     def convert(self) -> None:
-        pass
+        self._load()
+
+        self.d3d11_vertex_descriptor.elements_hash = 0
+        self.d3d11_vertex_descriptor.input_slots_hash = 0
+        self.d3d11_vertex_descriptor.elements_count = self.d3d9_vertex_descriptor.elements_count
+        self.d3d11_vertex_descriptor.input_slots_count = 0
+
+        # TODO: convert elements
+
+        self._store()
 
 
     def _load(self) -> None:
