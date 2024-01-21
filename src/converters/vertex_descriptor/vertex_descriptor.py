@@ -7,6 +7,11 @@ import d3d9
 import d3d11
 
 
+DATA_TYPE_TO_FORMAT_MAP = {
+    # TODO
+}
+
+
 class VertexDescriptor:
 
     def __init__(self, resource_entry: bnd2.ResourceEntry):
@@ -25,7 +30,16 @@ class VertexDescriptor:
         self.d3d11_vertex_descriptor.elements_count = self.d3d9_vertex_descriptor.elements_count
         self.d3d11_vertex_descriptor.input_slots_count = 0
 
-        # TODO: convert elements
+        self.d3d11_vertex_descriptor.elements = [d3d11.Element() for _ in range(self.d3d9_vertex_descriptor.elements_count)]
+        for i in range(self.d3d9_vertex_descriptor.elements_count):
+            self.d3d11_vertex_descriptor.elements[i].semantic_name = None # TODO
+            self.d3d11_vertex_descriptor.elements[i].semantic_index = None # TODO
+            self.d3d11_vertex_descriptor.elements[i].input_slot = None # TODO
+            self.d3d11_vertex_descriptor.elements[i].input_slot_class = None # TODO
+            self.d3d11_vertex_descriptor.elements[i].format = DATA_TYPE_TO_FORMAT_MAP[self.d3d9_vertex_descriptor.elements[i].data_type]
+            self.d3d11_vertex_descriptor.elements[i].offset = self.d3d9_vertex_descriptor.elements[i].offset
+            self.d3d11_vertex_descriptor.elements[i].instance_data_step_rate = None # TODO
+            self.d3d11_vertex_descriptor.elements[i].vertex_stride = self.d3d9_vertex_descriptor.elements[i].vertex_stride
 
         self._store()
 
