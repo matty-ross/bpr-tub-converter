@@ -38,10 +38,9 @@ class VertexDescriptor:
         self.d3d9_vertex_descriptor.elements_count = struct.unpack('B', data.read(1))[0]
         self.d3d9_vertex_descriptor.streams_count = struct.unpack('B', data.read(1))[0]
 
-        self.d3d9_vertex_descriptor.elements = []
-        for i in range(self.d3d9_vertex_descriptor.elements_count):
+        self.d3d9_vertex_descriptor.elements = [d3d9.Element() for _ in range(self.d3d9_vertex_descriptor.elements_count)]
+        for i, element in enumerate(self.d3d9_vertex_descriptor.elements):
             data.seek(0x10 + i * 0x10)
-            element = d3d9.Element()
             element.stream_number = struct.unpack('B', data.read(1))[0]
             element.vertex_stride = struct.unpack('B', data.read(1))[0]
             element.offset = struct.unpack('<H', data.read(2))[0]
@@ -50,7 +49,6 @@ class VertexDescriptor:
             element.usage = d3d9.Usage(struct.unpack('b', data.read(1))[0])
             element.usage_index = struct.unpack('B', data.read(1))[0]
             element.map_index = struct.unpack('B', data.read(1))[0]
-            self.d3d9_vertex_descriptor.elements.append(element)
 
 
     def _store(self) -> None:
