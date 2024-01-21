@@ -85,18 +85,16 @@ class MaterialState:
     def convert(self) -> None:
         self._load()
 
-        self.d3d11_material_state.blend_state.render_target_blend_states = []
-        for _ in range(8):
-            render_target_blend_state = d3d11.RenderTargetBlendState()
-            render_target_blend_state.blend_enable = self.d3d9_material_state.blend_state.alpha_blend_enable
-            render_target_blend_state.source_blend = BLEND_MAP[self.d3d9_material_state.blend_state.source_blend]
-            render_target_blend_state.destination_blend = BLEND_MAP[self.d3d9_material_state.blend_state.destination_blend]
-            render_target_blend_state.blend_oepration = BLEND_OPERATION_MAP[self.d3d9_material_state.blend_state.blend_oepration]
-            render_target_blend_state.source_blend_alpha = BLEND_MAP[self.d3d9_material_state.blend_state.source_blend_alpha]
-            render_target_blend_state.destination_blend_alpha = BLEND_MAP[self.d3d9_material_state.blend_state.destination_blend_alpha]
-            render_target_blend_state.blend_operation_alpha = BLEND_OPERATION_MAP[self.d3d9_material_state.blend_state.blend_operation_alpha]
-            render_target_blend_state.color_write_mask = self.d3d9_material_state.blend_state.color_write_enable[0]
-            self.d3d11_material_state.blend_state.render_target_blend_states.append(render_target_blend_state)
+        self.d3d11_material_state.blend_state.render_target_blend_states = [d3d11.RenderTargetBlendState() for _ in range(8)]
+        for i in range(8):
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].blend_enable = self.d3d9_material_state.blend_state.alpha_blend_enable
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].source_blend = BLEND_MAP[self.d3d9_material_state.blend_state.source_blend]
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].destination_blend = BLEND_MAP[self.d3d9_material_state.blend_state.destination_blend]
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].blend_oepration = BLEND_OPERATION_MAP[self.d3d9_material_state.blend_state.blend_oepration]
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].source_blend_alpha = BLEND_MAP[self.d3d9_material_state.blend_state.source_blend_alpha]
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].destination_blend_alpha = BLEND_MAP[self.d3d9_material_state.blend_state.destination_blend_alpha]
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].blend_operation_alpha = BLEND_OPERATION_MAP[self.d3d9_material_state.blend_state.blend_operation_alpha]
+            self.d3d11_material_state.blend_state.render_target_blend_states[i].color_write_mask = self.d3d9_material_state.blend_state.color_write_enable[0]
         self.d3d11_material_state.blend_state.blend_factor = self.d3d9_material_state.blend_state.blend_factor
         self.d3d11_material_state.blend_state.alpha_to_coverage_enable = self.d3d9_material_state.blend_state.alpha_to_coverage_enable
         self.d3d11_material_state.blend_state.independent_blend_enable = self.d3d9_material_state.blend_state.separate_alpha_blend_enable
