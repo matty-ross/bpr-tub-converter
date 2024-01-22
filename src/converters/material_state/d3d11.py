@@ -58,9 +58,9 @@ class FillMode(Enum):
 
 
 class CullMode(Enum):
-  NONE = 1
-  FRONT = 2
-  BACK = 3
+    NONE = 1
+    FRONT = 2
+    BACK = 3
 
 
 @dataclass
