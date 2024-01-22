@@ -7,7 +7,7 @@ import d3d9
 import d3d11
 
 
-TEXTURE_ADDRESS_MODE_MAP = {
+D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE = {
     d3d9.TextureAddressMode.WRAP: d3d11.TextureAddressMode.WRAP,
     d3d9.TextureAddressMode.MIRROR: d3d11.TextureAddressMode.MIRROR,
     d3d9.TextureAddressMode.CLAMP: d3d11.TextureAddressMode.CLAMP,
@@ -16,9 +16,14 @@ TEXTURE_ADDRESS_MODE_MAP = {
 }
 
 
-TEXTURE_FILTER_TYPE_MAP = {
+D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE = {
+    # d3d9.TextureFilterType.NONE:
     d3d9.TextureFilterType.POINT: d3d11.TextureFilterType.POINT,
     d3d9.TextureFilterType.LINEAR: d3d11.TextureFilterType.LINEAR,
+    # d3d9.TextureFilterType.ANISOTROPIC:
+    # d3d9.TextureFilterType.PYRAMIDAL_QUAD:
+    # d3d9.TextureFilterType.GAUSSIAN_QUAD:
+    # d3d9.TextureFilterType.CONVOLUTION_MONO:
 }
 
 
@@ -35,16 +40,17 @@ class TextureState:
     def convert(self) -> None:
         self._load()
 
-        self.d3d11_texture_state.sampler_state.address_mode_u = TEXTURE_ADDRESS_MODE_MAP[self.d3d9_texture_state.sampler_state.address_mode_u]
-        self.d3d11_texture_state.sampler_state.address_mode_v = TEXTURE_ADDRESS_MODE_MAP[self.d3d9_texture_state.sampler_state.address_mode_v]
-        self.d3d11_texture_state.sampler_state.address_mode_w = TEXTURE_ADDRESS_MODE_MAP[self.d3d9_texture_state.sampler_state.address_mode_w]
-        self.d3d11_texture_state.sampler_state.magnification_filter = TEXTURE_FILTER_TYPE_MAP[self.d3d9_texture_state.sampler_state.magnification_filter]
-        self.d3d11_texture_state.sampler_state.minification_filter = TEXTURE_FILTER_TYPE_MAP[self.d3d9_texture_state.sampler_state.minification_filter]
-        self.d3d11_texture_state.sampler_state.mipmap_filter = TEXTURE_FILTER_TYPE_MAP[self.d3d9_texture_state.sampler_state.mipmap_filter]
+        self.d3d11_texture_state.sampler_state.address_mode_u = D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE[self.d3d9_texture_state.sampler_state.address_mode_u]
+        self.d3d11_texture_state.sampler_state.address_mode_v = D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE[self.d3d9_texture_state.sampler_state.address_mode_v]
+        self.d3d11_texture_state.sampler_state.address_mode_w = D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE[self.d3d9_texture_state.sampler_state.address_mode_w]
+        self.d3d11_texture_state.sampler_state.magnification_filter = D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE[self.d3d9_texture_state.sampler_state.magnification_filter]
+        self.d3d11_texture_state.sampler_state.minification_filter = D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE[self.d3d9_texture_state.sampler_state.minification_filter]
+        self.d3d11_texture_state.sampler_state.mipmap_filter = D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE[self.d3d9_texture_state.sampler_state.mipmap_filter]
         self.d3d11_texture_state.sampler_state.min_lod = struct.unpack('<f', b'\xFF\xFF\x7F\xFF')[0] # -FLT_MAX
         self.d3d11_texture_state.sampler_state.max_lod = struct.unpack('<f', b'\xFF\xFF\x7F\x7F')[0] # FLT_MAX
         self.d3d11_texture_state.sampler_state.max_anisotropy = self.d3d9_texture_state.sampler_state.max_anisotropy
         self.d3d11_texture_state.sampler_state.mipmap_lod_bias = self.d3d9_texture_state.sampler_state.mipmap_lod_bias
+        self.d3d11_texture_state.sampler_state.comparsion_function = d3d11.CompasrionFunction.ALWAYS
         self.d3d11_texture_state.sampler_state.use_border_color = self.d3d9_texture_state.sampler_state.border_color != 0x00000000
 
         self._store()
@@ -80,7 +86,7 @@ class TextureState:
         data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.max_lod))
         data.write(struct.pack('<L', self.d3d11_texture_state.sampler_state.max_anisotropy))
         data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.mipmap_lod_bias))
-        data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.comparsion_function))
+        data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.comparsion_function.value))
         data.write(struct.pack('?', self.d3d11_texture_state.sampler_state.use_border_color))
         data.seek(0x30)
         data.write(struct.pack('<L', 1))

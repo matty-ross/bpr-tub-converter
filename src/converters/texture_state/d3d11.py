@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-
 class TextureAddressMode(Enum):
     WRAP = 1
     MIRROR = 2
