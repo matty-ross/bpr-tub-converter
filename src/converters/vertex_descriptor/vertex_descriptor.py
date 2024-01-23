@@ -7,8 +7,25 @@ import d3d9
 import d3d11
 
 
-DATA_TYPE_TO_FORMAT_MAP = {
-    # TODO
+D3D9_DATA_TYPE_TO_D3D11_FORMAT = {
+    d3d9.DataType.FLOAT1: d3d11.Format.R32_FLOAT,
+    d3d9.DataType.FLOAT2: d3d11.Format.R32G32_FLOAT,
+    d3d9.DataType.FLOAT3: d3d11.Format.R32G32B32_FLOAT,
+    d3d9.DataType.FLOAT4: d3d11.Format.R32G32B32A32_FLOAT,
+    # d3d9.DataType.D3DCOLOR:
+    d3d9.DataType.UBYTE4: d3d11.Format.R8G8B8A8_UINT,
+    d3d9.DataType.SHORT2: d3d11.Format.R16G16_SINT,
+    d3d9.DataType.SHORT4: d3d11.Format.R16G16B16A16_SINT,
+    d3d9.DataType.UBYTE4N: d3d11.Format.R8G8B8A8_UNORM,
+    d3d9.DataType.SHORT2N: d3d11.Format.R16G16_SNORM,
+    d3d9.DataType.SHORT4N: d3d11.Format.R16G16B16A16_SNORM,
+    d3d9.DataType.USHORT2N: d3d11.Format.R16G16_UNORM,
+    d3d9.DataType.USHORT4N: d3d11.Format.R16G16B16A16_UNORM,
+    # d3d9.DataType.UDEC3:
+    # d3d9.DataType.DEC3N:
+    d3d9.DataType.FLOAT16_2: d3d11.Format.R16G16_FLOAT,
+    d3d9.DataType.FLOAT16_4: d3d11.Format.R16G16B16A16_FLOAT,
+    d3d9.DataType.UNUSED: d3d11.Format.UNKNOWN,
 }
 
 
@@ -25,8 +42,8 @@ class VertexDescriptor:
     def convert(self) -> None:
         self._load()
 
-        self.d3d11_vertex_descriptor.elements_hash = 0
-        self.d3d11_vertex_descriptor.input_slots_hash = 0
+        self.d3d11_vertex_descriptor.elements_hash = 0x00000000
+        self.d3d11_vertex_descriptor.input_slots_hash = 0x00000000
         self.d3d11_vertex_descriptor.elements_count = self.d3d9_vertex_descriptor.elements_count
         self.d3d11_vertex_descriptor.input_slots_count = 0
 
@@ -35,10 +52,10 @@ class VertexDescriptor:
             self.d3d11_vertex_descriptor.elements[i].semantic_name = None # TODO
             self.d3d11_vertex_descriptor.elements[i].semantic_index = None # TODO
             self.d3d11_vertex_descriptor.elements[i].input_slot = None # TODO
-            self.d3d11_vertex_descriptor.elements[i].input_slot_class = None # TODO
-            self.d3d11_vertex_descriptor.elements[i].format = DATA_TYPE_TO_FORMAT_MAP[self.d3d9_vertex_descriptor.elements[i].data_type]
+            self.d3d11_vertex_descriptor.elements[i].input_slot_class = d3d11.InputClassification.PER_VERTEX_DATA
+            self.d3d11_vertex_descriptor.elements[i].format = D3D9_DATA_TYPE_TO_D3D11_FORMAT[self.d3d9_vertex_descriptor.elements[i].data_type]
             self.d3d11_vertex_descriptor.elements[i].offset = self.d3d9_vertex_descriptor.elements[i].offset
-            self.d3d11_vertex_descriptor.elements[i].instance_data_step_rate = None # TODO
+            self.d3d11_vertex_descriptor.elements[i].instance_data_step_rate = 0
             self.d3d11_vertex_descriptor.elements[i].vertex_stride = self.d3d9_vertex_descriptor.elements[i].vertex_stride
 
         self._store()
