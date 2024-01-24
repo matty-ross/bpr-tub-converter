@@ -24,30 +24,30 @@ class DataType(Enum):
 
 
 class Method(Enum):
-    DEFAULT = 0,
-    PARTIALU = 1,
-    PARTIALV = 2,
-    CROSSUV = 3,
-    UV = 4,
-    LOOKUP = 5,
-    LOOKUPPRESAMPLED = 6,
+    DEFAULT = 0
+    PARTIALU = 1
+    PARTIALV = 2
+    CROSSUV = 3
+    UV = 4
+    LOOKUP = 5
+    LOOKUPPRESAMPLED = 6
 
 
 class Usage(Enum):
-    POSITION = 0,
-    BLENDWEIGHT = 1,
-    BLENDINDICES = 2,
-    NORMAL = 3,
-    PSIZE = 4,
-    TEXCOORD = 5,
-    TANGENT = 6,
-    BINORMAL = 7,
-    TESSFACTOR = 8,
-    POSITIONT = 9,
-    COLOR = 10,
-    FOG = 11,
-    DEPTH = 12,
-    SAMPLE = 13,
+    POSITION = 0
+    BLENDWEIGHT = 1
+    BLENDINDICES = 2
+    NORMAL = 3
+    PSIZE = 4
+    TEXCOORD = 5
+    TANGENT = 6
+    BINORMAL = 7
+    TESSFACTOR = 8
+    POSITIONT = 9
+    COLOR = 10
+    FOG = 11
+    DEPTH = 12
+    SAMPLE = 13
 
 
 @dataclass

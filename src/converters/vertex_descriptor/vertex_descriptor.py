@@ -29,6 +29,88 @@ D3D9_DATA_TYPE_TO_D3D11_FORMAT = {
 }
 
 
+D3D9_USAGE_TO_D3D11_SEMANTIC_NAME = {
+    d3d9.Usage.POSITION: d3d11.SemanticName.POSITION,
+    d3d9.Usage.BLENDWEIGHT: d3d11.SemanticName.BLENDWEIGHT,
+    d3d9.Usage.BLENDINDICES: d3d11.SemanticName.BLENDINDICES,
+    d3d9.Usage.NORMAL: d3d11.SemanticName.NORMAL,
+    d3d9.Usage.PSIZE: d3d11.SemanticName.PSIZE,
+    # d3d9.Usage.TEXCOORD: TODO
+    d3d9.Usage.TANGENT: d3d11.SemanticName.TANGENT,
+    d3d9.Usage.BINORMAL: d3d11.SemanticName.BINORMAL.BINORMAL,
+    # d3d9.Usage.TESSFACTOR:
+    d3d9.Usage.POSITIONT: d3d11.SemanticName.POSITIONT,
+    # d3d9.Usage.COLOR: TODO
+    # d3d9.Usage.FOG:
+    # d3d9.Usage.DEPTH:
+    # d3d9.Usage.SAMPLE:
+}
+
+
+D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_NAME = {
+    0: d3d11.SemanticName.NONE,
+    1: d3d11.SemanticName.POSITION,
+    2: d3d11.SemanticName.POSITION,
+    3: d3d11.SemanticName.NORMAL,
+    4: d3d11.SemanticName.COLOR0,
+    5: d3d11.SemanticName.COLOR1,
+    6: d3d11.SemanticName.TEXCOORD0,
+    7: d3d11.SemanticName.TEXCOORD1,
+    8: d3d11.SemanticName.TEXCOORD2,
+    9: d3d11.SemanticName.TEXCOORD3,
+    10: d3d11.SemanticName.TEXCOORD4,
+    11: d3d11.SemanticName.TEXCOORD5,
+    12: d3d11.SemanticName.TEXCOORD6,
+    13: d3d11.SemanticName.TEXCOORD7,
+    14: d3d11.SemanticName.BLENDINDICES,
+    15: d3d11.SemanticName.BLENDWEIGHT,
+    16: d3d11.SemanticName.POSITION,
+    17: d3d11.SemanticName.NORMAL,
+    18: d3d11.SemanticName.POSITION,
+    19: d3d11.SemanticName.POSITION,
+    20: d3d11.SemanticName.POSITION,
+    21: d3d11.SemanticName.TANGENT,
+    22: d3d11.SemanticName.BINORMAL,
+    # 23:
+    # 24:
+    25: d3d11.SemanticName.PSIZE,
+    26: d3d11.SemanticName.BLENDINDICES,
+    27: d3d11.SemanticName.BLENDWEIGHT,
+}
+
+
+D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_INDEX = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 1,
+    6: 0,
+    7: 1,
+    8: 2,
+    9: 3,
+    10: 4,
+    11: 5,
+    12: 6,
+    13: 7,
+    14: 0,
+    15: 0,
+    16: 1,
+    17: 1,
+    18: 0,
+    19: 0,
+    20: 0,
+    21: 0,
+    22: 0,
+    23: 2,
+    24: 0,
+    25: 0,
+    26: 1,
+    27: 1,
+}
+
+
 class VertexDescriptor:
 
     def __init__(self, resource_entry: bnd2.ResourceEntry):
@@ -45,18 +127,26 @@ class VertexDescriptor:
         self.d3d11_vertex_descriptor.elements_hash = 0x00000000
         self.d3d11_vertex_descriptor.input_slots_hash = 0x00000000
         self.d3d11_vertex_descriptor.elements_count = self.d3d9_vertex_descriptor.elements_count
-        self.d3d11_vertex_descriptor.input_slots_count = 0
+        self.d3d11_vertex_descriptor.input_slots_count = self.d3d9_vertex_descriptor.streams_count
 
         self.d3d11_vertex_descriptor.elements = [d3d11.Element() for _ in range(self.d3d9_vertex_descriptor.elements_count)]
         for i in range(self.d3d9_vertex_descriptor.elements_count):
-            self.d3d11_vertex_descriptor.elements[i].semantic_name = None # TODO
-            self.d3d11_vertex_descriptor.elements[i].semantic_index = None # TODO
-            self.d3d11_vertex_descriptor.elements[i].input_slot = None # TODO
+            usage = self.d3d9_vertex_descriptor.elements[i].usage
+            usage_index = self.d3d9_vertex_descriptor.elements[i].usage_index
+            map_index = self.d3d9_vertex_descriptor.elements[i].map_index
+            
+            self.d3d11_vertex_descriptor.elements[i].semantic_name = D3D9_USAGE_TO_D3D11_SEMANTIC_NAME[usage] if usage is not None else D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_NAME[map_index]
+            self.d3d11_vertex_descriptor.elements[i].semantic_index = usage_index if usage_index is not None else D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_INDEX[map_index]
+            self.d3d11_vertex_descriptor.elements[i].input_slot = self.d3d9_vertex_descriptor.elements[i].stream_number
             self.d3d11_vertex_descriptor.elements[i].input_slot_class = d3d11.InputClassification.PER_VERTEX_DATA
             self.d3d11_vertex_descriptor.elements[i].format = D3D9_DATA_TYPE_TO_D3D11_FORMAT[self.d3d9_vertex_descriptor.elements[i].data_type]
             self.d3d11_vertex_descriptor.elements[i].offset = self.d3d9_vertex_descriptor.elements[i].offset
             self.d3d11_vertex_descriptor.elements[i].instance_data_step_rate = 0
             self.d3d11_vertex_descriptor.elements[i].vertex_stride = self.d3d9_vertex_descriptor.elements[i].vertex_stride
+            
+            self.d3d11_vertex_descriptor.elements_hash |= (1 << self.d3d11_vertex_descriptor.elements[i].semantic_name.value)
+            if self.d3d11_vertex_descriptor.elements[i].input_slot_class == d3d11.InputClassification.PER_INSTANCE_DATA:
+                self.d3d11_vertex_descriptor.input_slots_hash |= (1 << self.d3d11_vertex_descriptor.elements[i].input_slot)
 
         self._store()
 
@@ -72,13 +162,15 @@ class VertexDescriptor:
         self.d3d9_vertex_descriptor.elements = [d3d9.Element() for _ in range(self.d3d9_vertex_descriptor.elements_count)]
         for i, element in enumerate(self.d3d9_vertex_descriptor.elements):
             data.seek(0x10 + i * 0x10)
+            usage = struct.unpack('b', data.read(1))[0]
+            usage_index = struct.unpack('b', data.read(1))[0]
             element.stream_number = struct.unpack('B', data.read(1))[0]
             element.vertex_stride = struct.unpack('B', data.read(1))[0]
             element.offset = struct.unpack('<H', data.read(2))[0]
             element.data_type = d3d9.DataType(struct.unpack('<l', data.read(4))[0])
             element.method = d3d9.Method(struct.unpack('b', data.read(1))[0])
-            element.usage = d3d9.Usage(struct.unpack('b', data.read(1))[0])
-            element.usage_index = struct.unpack('B', data.read(1))[0]
+            element.usage = d3d9.Usage(usage) if usage != -1 else None
+            element.usage_index = usage_index if usage_index != -1 else None
             element.map_index = struct.unpack('B', data.read(1))[0]
 
 
