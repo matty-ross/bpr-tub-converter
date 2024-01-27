@@ -222,6 +222,7 @@ class Renderable:
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
 
+        import_index = 0
         for i, mesh in enumerate(self.d3d11_renderable.meshes):
             mesh_offset = bnd2.BundleV2._align_offset(data.tell(), 0x10)
             meshes_offstes.append(mesh_offset)
@@ -232,6 +233,8 @@ class Renderable:
             data.write(struct.pack('<l', mesh.base_vertex_location))
             data.write(struct.pack('<L', mesh.start_index_location))
             data.write(struct.pack('<L', mesh.indices_count))
+            self.resource_entry.import_entries[import_index].offset = data.tell()
+            import_index += 1
             data.write(struct.pack('<L', 0))
             data.write(struct.pack('B', mesh.vertex_descriptors_count))
             data.write(struct.pack('B', mesh.instance_count))
@@ -241,9 +244,9 @@ class Renderable:
             for _ in range(mesh.vertex_buffers_count):
                 data.write(struct.pack('<L', vertex_buffer_offset))
             for _ in range(mesh.vertex_descriptors_count):
+                self.resource_entry.import_entries[import_index].offset = data.tell()
+                import_index += 1
                 data.write(struct.pack('<L', 0))
-
-        # TODO: update import entries
                 
         data.seek(0x14)
         data.write(struct.pack('<L', meshes_offset))
