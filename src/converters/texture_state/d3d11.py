@@ -45,3 +45,6 @@ class SamplerState:
 @dataclass
 class TextureState:
     sampler_state: SamplerState = None
+
+    def __post_init__(self):
+        self.sampler_state = SamplerState()

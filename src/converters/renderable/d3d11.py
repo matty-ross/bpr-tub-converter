@@ -97,6 +97,10 @@ class Renderable:
     version_number: int = None
     meshes_count: int = None
     flags: int = None
-    index_buffer: IndexBuffer
-    vertex_buffer: VertexBuffer
+    index_buffer: IndexBuffer = None
+    vertex_buffer: VertexBuffer = None
     meshes: list[Mesh] = None
+
+    def __post_init__(self):
+        self.index_buffer = IndexBuffer()
+        self.vertex_buffer = VertexBuffer()

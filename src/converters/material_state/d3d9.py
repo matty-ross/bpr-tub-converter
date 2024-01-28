@@ -123,6 +123,11 @@ class RasterizerState:
 
 @dataclass
 class MaterialState:
-    blend_state: BlendState
-    depth_stencil_state: DepthStencilState
-    rasterizer_state: RasterizerState
+    blend_state: BlendState = None
+    depth_stencil_state: DepthStencilState = None
+    rasterizer_state: RasterizerState = None
+
+    def __post_init__(self):
+        self.blend_state = BlendState()
+        self.depth_stencil_state = DepthStencilState()
+        self.rasterizer_state = RasterizerState()
