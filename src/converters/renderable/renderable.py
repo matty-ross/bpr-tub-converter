@@ -189,7 +189,7 @@ class Renderable:
         data = io.BytesIO()
 
         data.seek(0x0)
-        data.write(struct.pack('<ffff', self.d3d11_renderable.bounding_sphere))
+        data.write(struct.pack('<ffff', *self.d3d11_renderable.bounding_sphere))
         data.write(struct.pack('<H', self.d3d11_renderable.version_number))
         data.write(struct.pack('<H', self.d3d11_renderable.meshes_count))
         data.write(struct.pack('<L', 0))
@@ -227,8 +227,8 @@ class Renderable:
             mesh_offset = bundle_v2.BundleV2._align_offset(data.tell(), 0x10)
             meshes_offstes.append(mesh_offset)
             data.seek(mesh_offset)
-            for _ in range(16):
-                data.write('<f', mesh.affine_transformation_matrix[i])
+            for j in range(16):
+                data.write(struct.pack('<f', mesh.affine_transformation_matrix[j]))
             data.write(struct.pack('<l', mesh.primitive_topology.value))
             data.write(struct.pack('<l', mesh.base_vertex_location))
             data.write(struct.pack('<L', mesh.start_index_location))

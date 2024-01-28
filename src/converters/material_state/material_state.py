@@ -158,15 +158,15 @@ class MaterialState:
         self.d3d9_material_state.blend_state.alpha_to_coverage_enable = bool(struct.unpack('<L', data.read(4))[0])
 
         data.seek(depth_stencil_state_offset)
-        self.d3d9_material_state.depth_stencil_state.z_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.stencil_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.stencil_z_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.stencil_pass_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.stencil_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.ccw_stencil_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.ccw_stencil_z_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.ccw_stencil_pass_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.depth_stencil_state.ccw_stencil_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4)))[0]
+        self.d3d9_material_state.depth_stencil_state.z_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.stencil_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.stencil_z_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.stencil_pass_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.stencil_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.ccw_stencil_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.ccw_stencil_z_fail_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.ccw_stencil_pass_operation = d3d9.StencilOperation(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.depth_stencil_state.ccw_stencil_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4))[0])
         self.d3d9_material_state.depth_stencil_state.stencil_reference = struct.unpack('<L', data.read(4))[0]
         self.d3d9_material_state.depth_stencil_state.stencil_mask = struct.unpack('<L', data.read(4))[0]
         self.d3d9_material_state.depth_stencil_state.stencil_write_mask = struct.unpack('<L', data.read(4))[0]
@@ -176,8 +176,8 @@ class MaterialState:
         self.d3d9_material_state.depth_stencil_state.two_sided_stencil_mode_enable = bool(struct.unpack('<L', data.read(4))[0])
 
         data.seek(rasterizer_state_offset)
-        self.d3d9_material_state.rasterizer_state.fill_mode = d3d9.FillMode(struct.unpack('<l', data.read(4)))[0]
-        self.d3d9_material_state.rasterizer_state.cull_mode = d3d9.CullMode(struct.unpack('<l', data.read(4)))[0]
+        self.d3d9_material_state.rasterizer_state.fill_mode = d3d9.FillMode(struct.unpack('<l', data.read(4))[0])
+        self.d3d9_material_state.rasterizer_state.cull_mode = d3d9.CullMode(struct.unpack('<l', data.read(4))[0])
         self.d3d9_material_state.rasterizer_state.depth_bias = struct.unpack('<f', data.read(4))[0]
         self.d3d9_material_state.rasterizer_state.slope_scale_depth_bias = struct.unpack('<f', data.read(4))[0]
         self.d3d9_material_state.rasterizer_state.multisample_mask = struct.unpack('<L', data.read(4))[0]

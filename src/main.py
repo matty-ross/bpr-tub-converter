@@ -20,9 +20,10 @@ CONVERTERS = {
 
 def convert_bundle(bundle: bundle_v2.BundleV2) -> None:
     for resource_entry in bundle.resource_entries:
-        cls = CONVERTERS[resource_entry.type]
-        converter = cls(resource_entry)
-        converter.convert()
+        cls = CONVERTERS.get(resource_entry.type)
+        if cls:
+            converter = cls(resource_entry)
+            converter.convert()
 
 
 def main() -> None:

@@ -162,13 +162,13 @@ class VertexDescriptor:
         self.d3d9_vertex_descriptor.elements = [d3d9.Element() for _ in range(self.d3d9_vertex_descriptor.elements_count)]
         for i, element in enumerate(self.d3d9_vertex_descriptor.elements):
             data.seek(0x10 + i * 0x10)
-            usage = struct.unpack('b', data.read(1))[0]
-            usage_index = struct.unpack('b', data.read(1))[0]
             element.stream_number = struct.unpack('B', data.read(1))[0]
             element.vertex_stride = struct.unpack('B', data.read(1))[0]
             element.offset = struct.unpack('<H', data.read(2))[0]
             element.data_type = d3d9.DataType(struct.unpack('<l', data.read(4))[0])
             element.method = d3d9.Method(struct.unpack('b', data.read(1))[0])
+            usage = struct.unpack('b', data.read(1))[0]
+            usage_index = struct.unpack('b', data.read(1))[0]
             element.usage = d3d9.Usage(usage) if usage != -1 else None
             element.usage_index = usage_index if usage_index != -1 else None
             element.map_index = struct.unpack('B', data.read(1))[0]
