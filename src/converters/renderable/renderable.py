@@ -1,7 +1,7 @@
 import io
 import struct
 
-import bnd2
+from bnd2 import bundle_v2
 
 import d3d9
 import d3d11
@@ -98,9 +98,9 @@ D3D9_PRIMITIVE_TYPE_TO_D3D11_INDICES_COUNT = {
 
 class Renderable:
 
-    def __init__(self, resource_entry: bnd2.ResourceEntry):
+    def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 12, f"Resource entry with ID {resource_entry.id :08X} isn't Renderable."
-        self.resource_entry: bnd2.ResourceEntry = resource_entry
+        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
 
         self.d3d9_renderable = d3d9.Renderable()
         self.d3d11_renderable = d3d11.Renderable()
@@ -199,7 +199,7 @@ class Renderable:
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
 
-        meshes_offset = bnd2.BundleV2._align_offset(data.tell(), 0x10)
+        meshes_offset = bundle_v2.BundleV2._align_offset(data.tell(), 0x10)
         meshes_offstes = []
         data.seek(meshes_offset)
         for _ in range(self.d3d11_renderable.meshes_count):
@@ -224,7 +224,7 @@ class Renderable:
 
         import_index = 0
         for i, mesh in enumerate(self.d3d11_renderable.meshes):
-            mesh_offset = bnd2.BundleV2._align_offset(data.tell(), 0x10)
+            mesh_offset = bundle_v2.BundleV2._align_offset(data.tell(), 0x10)
             meshes_offstes.append(mesh_offset)
             data.seek(mesh_offset)
             for _ in range(16):

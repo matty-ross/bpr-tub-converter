@@ -1,7 +1,7 @@
 import io
 import struct
 
-import bnd2
+from bnd2 import bundle_v2
 
 import d3d9
 import d3d11
@@ -77,9 +77,9 @@ D3D9_CULL_MODE_TO_D3D11_CULL_MODE = {
 
 class MaterialState:
 
-    def __init__(self, resource_entry: bnd2.ResourceEntry):
+    def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 15, f"Resource entry with ID {resource_entry.id :08X} isn't MaterialState."
-        self.resource_entry: bnd2.ResourceEntry = resource_entry
+        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
 
         self.d3d9_material_state = d3d9.MaterialState()
         self.d3d11_material_state = d3d11.MaterialState()
