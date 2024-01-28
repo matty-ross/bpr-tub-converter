@@ -3,8 +3,8 @@ import struct
 
 from bnd2 import bundle_v2
 
-import d3d9
-import d3d11
+from . import d3d9
+from . import d3d11
 
 
 D3D9_DATA_TYPE_TO_D3D11_FORMAT = {
