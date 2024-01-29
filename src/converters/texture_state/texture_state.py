@@ -31,8 +31,7 @@ class TextureState:
 
     def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 14, f"Resource entry with ID {resource_entry.id :08X} isn't TextureState."
-        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
-
+        self.resource_entry = resource_entry
         self.d3d9_texture_state = d3d9.TextureState()
         self.d3d11_texture_state = d3d11.TextureState()
     
@@ -88,10 +87,9 @@ class TextureState:
         data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.mipmap_lod_bias))
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.comparsion_function.value))
         data.write(struct.pack('?', self.d3d11_texture_state.sampler_state.use_border_color))
-        data.seek(0x30)
+        data.write(bytes(3)) # padding
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))
-        
         self.resource_entry.import_entries[0].offset = data.tell()
         data.write(struct.pack('<L', 0))
 
