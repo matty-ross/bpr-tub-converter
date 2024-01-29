@@ -79,8 +79,7 @@ class MaterialState:
 
     def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 15, f"Resource entry with ID {resource_entry.id :08X} isn't MaterialState."
-        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
-
+        self.resource_entry = resource_entry
         self.d3d9_material_state = d3d9.MaterialState()
         self.d3d11_material_state = d3d11.MaterialState()
 
@@ -209,8 +208,8 @@ class MaterialState:
             data.write(struct.pack('<L', dword))
         data.write(struct.pack('<ffff', *self.d3d11_material_state.blend_state.blend_factor))
         data.write(struct.pack('?', self.d3d11_material_state.blend_state.alpha_to_coverage_enable))
-        data.write(struct.pack('?', self.d3d11_material_state.blend_state.independent_blend_enable))
-        data.seek(blend_state_offset + 0x34)
+        data.write(struct.pack('?', self.d3d11_material_state.blend_state.independent_blend_enable))        
+        data.write(bytes(2)) # padding
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))
         
@@ -230,7 +229,7 @@ class MaterialState:
         data.write(struct.pack('?', self.d3d11_material_state.depth_stencil_state.depth_enable))
         data.write(struct.pack('?', self.d3d11_material_state.depth_stencil_state.depth_write_enable))
         data.write(struct.pack('?', self.d3d11_material_state.depth_stencil_state.stencil_enable))
-        data.seek(depth_stencil_state_offset + 0x34)
+        data.write(bytes(1)) # padding
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', self.d3d11_material_state.depth_stencil_state.stencil_reference))
@@ -246,7 +245,6 @@ class MaterialState:
         data.write(struct.pack('?', self.d3d11_material_state.rasterizer_state.scissor_enable))
         data.write(struct.pack('?', self.d3d11_material_state.rasterizer_state.multisample_enable))
         data.write(struct.pack('?', self.d3d11_material_state.rasterizer_state.antialiased_line_enable))
-        data.seek(rasterizer_state_offset + 0x1C)
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))
 
