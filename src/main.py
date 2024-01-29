@@ -9,20 +9,21 @@ from converters.texture_state.texture_state import TextureState
 from converters.material_state.material_state import MaterialState
 
 
-CONVERTERS = {
-    0: Texture,
-    10: VertexDescriptor,
-    12: Renderable,
-    14: TextureState,
-    15: MaterialState,
-}
-
-
 def convert_bundle(bundle: bundle_v2.BundleV2) -> None:
     for resource_entry in bundle.resource_entries:
-        cls = CONVERTERS.get(resource_entry.type)
-        if cls:
-            converter = cls(resource_entry)
+        converter = None
+        if resource_entry.type == 0:
+            converter = Texture(resource_entry)
+        elif resource_entry.type == 10:
+            converter = VertexDescriptor(resource_entry)
+        elif resource_entry.type == 12:
+            converter = Renderable(resource_entry)
+        elif resource_entry.type == 14:
+            converter = TextureState(resource_entry)
+        elif resource_entry.type == 15:
+            converter = MaterialState(resource_entry)
+        
+        if converter is not None:
             converter.convert()
 
 
