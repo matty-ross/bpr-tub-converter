@@ -37,7 +37,7 @@ D3D9_USAGE_TO_D3D11_SEMANTIC_NAME = {
     d3d9.Usage.PSIZE: d3d11.SemanticName.PSIZE,
     # d3d9.Usage.TEXCOORD: TODO
     d3d9.Usage.TANGENT: d3d11.SemanticName.TANGENT,
-    d3d9.Usage.BINORMAL: d3d11.SemanticName.BINORMAL.BINORMAL,
+    d3d9.Usage.BINORMAL: d3d11.SemanticName.BINORMAL,
     # d3d9.Usage.TESSFACTOR:
     d3d9.Usage.POSITIONT: d3d11.SemanticName.POSITIONT,
     # d3d9.Usage.COLOR: TODO
@@ -115,8 +115,7 @@ class VertexDescriptor:
 
     def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 10, f"Resource entry with ID {resource_entry.id :08X} isn't VertexDescriptor."
-        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
-
+        self.resource_entry = resource_entry
         self.d3d9_vertex_descriptor = d3d9.VertexDescriptor()
         self.d3d11_vertex_descriptor = d3d11.VertexDescriptor()
 
@@ -168,7 +167,7 @@ class VertexDescriptor:
             element.data_type = d3d9.DataType(struct.unpack('<l', data.read(4))[0])
             element.method = d3d9.Method(struct.unpack('b', data.read(1))[0])
             usage = struct.unpack('b', data.read(1))[0]
-            usage_index = struct.unpack('b', data.read(1))[0]
+            usage_index = struct.unpack('B', data.read(1))[0]
             element.usage = d3d9.Usage(usage) if usage != -1 else None
             element.usage_index = usage_index if usage_index != -1 else None
             element.map_index = struct.unpack('B', data.read(1))[0]
@@ -195,3 +194,5 @@ class VertexDescriptor:
             data.write(struct.pack('<L', element.offset))
             data.write(struct.pack('<L', element.instance_data_step_rate))
             data.write(struct.pack('<L', element.vertex_stride))
+
+        self.resource_entry.data[0] = data.getvalue()
