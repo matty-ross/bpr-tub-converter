@@ -85,3 +85,4 @@ class Texture:
     depth: int = None
     mipmap_levels_count: int = None
     type: TextureType = None
+    flags: int = None

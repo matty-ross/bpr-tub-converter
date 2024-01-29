@@ -146,6 +146,7 @@ class Texture:
     type: TextureType = None
     data_offset: int = None
     format: Format = None
+    flags: int = None
     width: int = None
     height: int = None
     depth: int = None

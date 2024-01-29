@@ -87,8 +87,7 @@ class Texture:
 
     def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 0, f"Resource entry with ID {resource_entry.id :08X} isn't Texture."
-        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
-
+        self.resource_entry = resource_entry
         self.d3d9_texture = d3d9.Texture()
         self.d3d11_texture = d3d11.Texture()
 
@@ -100,6 +99,7 @@ class Texture:
         self.d3d11_texture.type = D3D9_TEXTURE_TYPE_TO_D3D11_TEXTURE_TYPE[self.d3d9_texture.type]
         self.d3d11_texture.data_offset = self.d3d9_texture.data_offset
         self.d3d11_texture.format = D3D9_FORMAT_TO_D3D11_FORMAT[self.d3d9_texture.format]
+        self.d3d11_texture.flags = 0
         self.d3d11_texture.width = self.d3d9_texture.width
         self.d3d11_texture.height = self.d3d9_texture.height
         self.d3d11_texture.depth = self.d3d9_texture.depth
@@ -122,6 +122,7 @@ class Texture:
         self.d3d9_texture.depth = struct.unpack('B', data.read(1))[0]
         self.d3d9_texture.mipmap_levels_count = struct.unpack('B', data.read(1))[0]
         self.d3d9_texture.type = d3d9.TextureType(struct.unpack('b', data.read(1))[0])
+        self.d3d9_texture.flags = struct.unpack('B', data.read(1))[0]
 
     
     def _store(self) -> None:
@@ -136,14 +137,14 @@ class Texture:
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<l', self.d3d11_texture.format.value))
-        data.write(struct.pack('<L', 0))
+        data.write(struct.pack('<L', self.d3d11_texture.flags))
         data.write(struct.pack('<H', self.d3d11_texture.width))
         data.write(struct.pack('<H', self.d3d11_texture.height))
         data.write(struct.pack('<H', self.d3d11_texture.depth))
         data.write(struct.pack('<H', self.d3d11_texture.count))
         data.write(struct.pack('B', self.d3d11_texture.most_detailed_mipmap_level))
         data.write(struct.pack('B', self.d3d11_texture.mipmap_levels_count))
-        data.seek(0x30)
+        data.write(bytes(2)) # padding
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
