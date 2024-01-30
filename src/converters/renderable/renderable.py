@@ -8,71 +8,9 @@ from . import d3d11
 
 
 D3D3_FORMAT_TO_D3D11_INDEX_SIZE = {
-    # d3d9.Format.UNKNOWN:
-    # d3d9.Format.R8G8B8:
-    # d3d9.Format.A8R8G8B8:
-    # d3d9.Format.X8R8G8B8:
-    # d3d9.Format.R5G6B5:
-    # d3d9.Format.X1R5G5B5:
-    # d3d9.Format.A1R5G5B5:
-    # d3d9.Format.A4R4G4B4:
-    # d3d9.Format.R3G3B2:
-    # d3d9.Format.A8:
-    # d3d9.Format.A8R3G3B2:
-    # d3d9.Format.X4R4G4B4:
-    # d3d9.Format.A2B10G10R10:
-    # d3d9.Format.A8B8G8R8:
-    # d3d9.Format.X8B8G8R8:
-    # d3d9.Format.G16R16:
-    # d3d9.Format.A2R10G10B10:
-    # d3d9.Format.A16B16G16R16:
-    # d3d9.Format.A8P8:
-    # d3d9.Format.P8:
-    # d3d9.Format.L8:
-    # d3d9.Format.A8L8:
-    # d3d9.Format.A4L4:
-    # d3d9.Format.V8U8:
-    # d3d9.Format.L6V5U5:
-    # d3d9.Format.X8L8V8U8:
-    # d3d9.Format.Q8W8V8U8:
-    # d3d9.Format.V16U16:
-    # d3d9.Format.A2W10V10U10:
-    # d3d9.Format.UYVY:
-    # d3d9.Format.R8G8_B8G8:
-    # d3d9.Format.YUY2:
-    # d3d9.Format.G8R8_G8B8:
-    # d3d9.Format.DXT1:
-    # d3d9.Format.DXT2:
-    # d3d9.Format.DXT3:
-    # d3d9.Format.DXT4:
-    # d3d9.Format.DXT5:
-    # d3d9.Format.D16_LOCKABLE:
-    # d3d9.Format.D32:
-    # d3d9.Format.D15S1:
-    # d3d9.Format.D24S8:
-    # d3d9.Format.D24X8:
-    # d3d9.Format.D24X4S4:
-    # d3d9.Format.D16:
-    # d3d9.Format.D32F_LOCKABLE:
-    # d3d9.Format.D24FS8:
-    # d3d9.Format.D32_LOCKABLE:
-    # d3d9.Format.S8_LOCKABLE:
-    # d3d9.Format.L16:
-    # d3d9.Format.VERTEXDATA:
+    # Only these 2 formats are allowed.
     d3d9.Format.INDEX16: 2,
     d3d9.Format.INDEX32: 4,
-    # d3d9.Format.Q16W16V16U16:
-    # d3d9.Format.MULTI2_ARGB8:
-    # d3d9.Format.R16F:
-    # d3d9.Format.G16R16F:
-    # d3d9.Format.A16B16G16R16F:
-    # d3d9.Format.R32F:
-    # d3d9.Format.G32R32F:
-    # d3d9.Format.A32B32G32R32F:
-    # d3d9.Format.CxV8U8:
-    # d3d9.Format.A1:
-    # d3d9.Format.A2B10G10R10_XR_BIAS:
-    # d3d9.Format.BINARYBUFFER:
 }
 
 
@@ -100,8 +38,7 @@ class Renderable:
 
     def __init__(self, resource_entry: bundle_v2.ResourceEntry):
         assert resource_entry.type == 12, f"Resource entry with ID {resource_entry.id :08X} isn't Renderable."
-        self.resource_entry: bundle_v2.ResourceEntry = resource_entry
-
+        self.resource_entry = resource_entry
         self.d3d9_renderable = d3d9.Renderable()
         self.d3d11_renderable = d3d11.Renderable()
 
@@ -148,21 +85,21 @@ class Renderable:
         self.d3d9_renderable.version_number = struct.unpack('<H', data.read(2))[0]
         self.d3d9_renderable.meshes_count = struct.unpack('<H', data.read(2))[0]
         meshes_offset = struct.unpack('<L', data.read(4))[0]
-        data.seek(0x1C)
+        _ = data.read(4)
         self.d3d9_renderable.flags = struct.unpack('<H', data.read(2))[0]
-        data.seek(0x20)
+        _ = data.read(2) # padding
         index_buffer_offset = struct.unpack('<L', data.read(4))[0]
         vertex_buffer_offset = struct.unpack('<L', data.read(4))[0]
 
         data.seek(index_buffer_offset)
         self.d3d9_renderable.index_buffer.indices_count = struct.unpack('<L', data.read(4))[0]
         self.d3d9_renderable.index_buffer.data_offset = struct.unpack('<L', data.read(4))[0]
-        data.seek(index_buffer_offset + 0xC)
+        _ = data.read(4)
         self.d3d9_renderable.index_buffer.format = d3d9.Format(struct.unpack('<l', data.read(4))[0])
 
         data.seek(vertex_buffer_offset)
         self.d3d9_renderable.vertex_buffer.data_offset = struct.unpack('<L', data.read(4))[0]
-        data.seek(vertex_buffer_offset + 0x8)
+        _ = data.read(4)
         self.d3d9_renderable.vertex_buffer.data_size = struct.unpack('<L', data.read(4))[0]
         self.d3d9_renderable.vertex_buffer.flags = struct.unpack('<L', data.read(4))[0]
 
@@ -178,7 +115,7 @@ class Renderable:
             mesh.vertices_count = struct.unpack('<L', data.read(4))[0]
             mesh.minimum_vertex_index = struct.unpack('<L', data.read(4))[0]
             mesh.primitives_count = struct.unpack('<L', data.read(4))[0]
-            data.seek(mesh_offset + 0x5C)
+            _ = data.read(4)
             mesh.vertex_descriptors_count = struct.unpack('B', data.read(1))[0]
             mesh.instance_count = struct.unpack('B', data.read(1))[0]
             mesh.vertex_buffers_count = struct.unpack('B', data.read(1))[0]
@@ -195,12 +132,11 @@ class Renderable:
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<H', self.d3d11_renderable.flags))
-        data.seek(0x20)
+        data.write(bytes(2)) # padding
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
 
         meshes_offset = bundle_v2.BundleV2._align_offset(data.tell(), 0x10)
-        meshes_offstes = []
         data.seek(meshes_offset)
         for _ in range(self.d3d11_renderable.meshes_count):
             data.write(struct.pack('<L', 0))
@@ -222,6 +158,7 @@ class Renderable:
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
 
+        meshes_offstes = []
         import_index = 0
         for i, mesh in enumerate(self.d3d11_renderable.meshes):
             mesh_offset = bundle_v2.BundleV2._align_offset(data.tell(), 0x10)
@@ -253,7 +190,6 @@ class Renderable:
         data.seek(0x20)
         data.write(struct.pack('<L', index_buffer_offset))
         data.write(struct.pack('<L', vertex_buffer_offset))
-
         data.seek(meshes_offset)
         for mesh_offset in meshes_offstes:
             data.write(struct.pack('<L', mesh_offset))
