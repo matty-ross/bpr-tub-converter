@@ -197,14 +197,14 @@ class MaterialState:
         blend_state_offset = data.tell()
         for render_target_blend_state in self.d3d11_material_state.blend_state.render_target_blend_states:
             dword = 0x00000000
-            dword |= (int(render_target_blend_state.blend_enable) << 0) & (2 ** 1 - 1)
-            dword |= (render_target_blend_state.source_blend.value << 1) & (2 ** 5 - 1)
-            dword |= (render_target_blend_state.destination_blend.value << 6) & (2 ** 5 - 1)
-            dword |= (render_target_blend_state.blend_oepration.value << 11) & (2 ** 3 - 1)
-            dword |= (render_target_blend_state.source_blend_alpha.value << 14) & (2 ** 5 - 1)
-            dword |= (render_target_blend_state.destination_blend_alpha.value << 19) & (2 ** 5 - 1)
-            dword |= (render_target_blend_state.blend_operation_alpha.value << 24) & (2 ** 3 - 1)
-            dword |= (render_target_blend_state.color_write_mask << 27) & (2 ** 4 - 1)
+            dword |= (int(render_target_blend_state.blend_enable) & (2 ** 1 - 1)) << 0
+            dword |= (render_target_blend_state.source_blend.value & (2 ** 5 - 1)) << 1
+            dword |= (render_target_blend_state.destination_blend.value & (2 ** 5 - 1)) << 6
+            dword |= (render_target_blend_state.blend_oepration.value & (2 ** 3 - 1)) << 11
+            dword |= (render_target_blend_state.source_blend_alpha.value & (2 ** 5 - 1)) << 14
+            dword |= (render_target_blend_state.destination_blend_alpha.value & (2 ** 5 - 1)) << 19
+            dword |= (render_target_blend_state.blend_operation_alpha.value & (2 ** 3 - 1)) << 24
+            dword |= (render_target_blend_state.color_write_mask & (2 ** 4 - 1)) << 27
             data.write(struct.pack('<L', dword))
         data.write(struct.pack('<ffff', *self.d3d11_material_state.blend_state.blend_factor))
         data.write(struct.pack('?', self.d3d11_material_state.blend_state.alpha_to_coverage_enable))
