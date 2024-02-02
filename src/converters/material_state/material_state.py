@@ -70,8 +70,8 @@ D3D9_FILL_MODE_TO_D3D11_FILL_MODE = {
 
 D3D9_CULL_MODE_TO_D3D11_CULL_MODE = {
     d3d9.CullMode.NONE: d3d11.CullMode.NONE,
-    d3d9.CullMode.CW: d3d11.CullMode.FRONT,
-    d3d9.CullMode.CCW: d3d11.CullMode.BACK,
+    d3d9.CullMode.CW: d3d11.CullMode.BACK,
+    d3d9.CullMode.CCW: d3d11.CullMode.FRONT,
 }
 
 
