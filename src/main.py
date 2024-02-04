@@ -31,7 +31,7 @@ def convert_resource_entry(bundle: bundle_v2.BundleV2, resource_entry: bundle_v2
         bundle.change_resource_id(resource_entry.id, new_id)
         return
     
-    # VertexDescriptor
+    # Vertex Descriptor
     if resource_entry.type == 10:
         converter = VertexDescriptor(resource_entry)
         converter.convert()
@@ -45,14 +45,14 @@ def convert_resource_entry(bundle: bundle_v2.BundleV2, resource_entry: bundle_v2
         bundle.change_resource_id(resource_entry.id, new_id)
         return
 
-    # TextureState
+    # Texture State
     if resource_entry.type == 14:
         converter = TextureState(resource_entry)
         converter.convert()
         bundle.change_resource_id(resource_entry.id, new_id)
         return
     
-    # MaterialState
+    # Material State
     if resource_entry.type == 15:
         converter = MaterialState(resource_entry)
         converter.convert()
@@ -63,32 +63,42 @@ def convert_resource_entry(bundle: bundle_v2.BundleV2, resource_entry: bundle_v2
     if resource_entry.type == 42:
         bundle.change_resource_id(resource_entry.id, new_id)
         return
-    
-    # GraphicsSpec
-    if resource_entry.type == 65542:
-        return
-    
-    # GraphicsSpec
-    if resource_entry.type == 65546:
-        return
-    
-    print(f"Unhandled resource entry with ID: {resource_entry.id :08X} and Type: {resource_entry.type}")
 
 
 def main() -> None:
     tkinter.Tk().withdraw()
-    
+
     file_name = tkinter.filedialog.askopenfilename()
-
-    print(f"Converting bundle '{file_name}'...")
-
     bundle = bundle_v2.BundleV2(file_name)
     bundle.load()
+    
+    external_file_names = tkinter.filedialog.askopenfilenames()
+    external_bundles: list[bundle_v2.BundleV2] = []
+    for external_file_name in external_file_names:
+        external_bundle = bundle_v2.BundleV2(external_file_name)
+        external_bundle.load()    
+        external_bundles.append(external_bundle)
+
+    external_resource_ids = bundle.get_external_resource_ids()
+
+    external_resource_entries: list[bundle_v2.ResourceEntry] = []
+    for external_resource_id in external_resource_ids:
+        for external_bundle in external_bundles:
+            external_resource_entry = external_bundle.get_resource_entry(external_resource_id)
+            if external_resource_entry is not None:
+                external_resource_entries.append(external_resource_entry)
+                break
+        else:
+            print(f"Cannot find external resource entry with ID {external_resource_id :08X}.")
+
+    for external_resource_entry in external_resource_entries:
+        bundle.resource_entries.append(external_resource_entry)
+    
     for resource_entry in bundle.resource_entries:
         convert_resource_entry(bundle, resource_entry)
-    bundle.save()
-
-    print("Done")
+    
+    # bundle.save()
+    print("Done.")
 
 
 if __name__ == '__main__':
