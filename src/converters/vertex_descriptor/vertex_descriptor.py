@@ -1,7 +1,7 @@
 import io
 import struct
 
-from bnd2 import bundle_v2
+import bnd2
 
 from . import d3d9
 from . import d3d11
@@ -113,7 +113,7 @@ D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_INDEX = {
 
 class VertexDescriptor:
 
-    def __init__(self, resource_entry: bundle_v2.ResourceEntry):
+    def __init__(self, resource_entry: bnd2.ResourceEntry):
         assert resource_entry.type == 10, f"Resource entry with ID {resource_entry.id :08X} isn't VertexDescriptor."
         self.resource_entry = resource_entry
         self.d3d9_vertex_descriptor = d3d9.VertexDescriptor()

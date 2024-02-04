@@ -3,7 +3,7 @@ import struct
 import random
 import tkinter, tkinter.filedialog
 
-from bnd2 import bundle_v2
+import bnd2
 
 from converters.texture.texture import Texture
 from converters.vertex_descriptor.vertex_descriptor import VertexDescriptor
@@ -12,7 +12,7 @@ from converters.texture_state.texture_state import TextureState
 from converters.material_state.material_state import MaterialState
 
 
-def convert_resource_entry(bundle: bundle_v2.BundleV2, resource_entry: bundle_v2.ResourceEntry) -> None:
+def convert_resource_entry(bundle: bnd2.BundleV2, resource_entry: bnd2.ResourceEntry) -> None:
     new_id = random.randint(0x00000000, 0xFFFFFFFF)
     
     # Texture
@@ -69,35 +69,30 @@ def main() -> None:
     tkinter.Tk().withdraw()
 
     file_name = tkinter.filedialog.askopenfilename()
-    bundle = bundle_v2.BundleV2(file_name)
+    bundle = bnd2.BundleV2(file_name)
     bundle.load()
     
     external_file_names = tkinter.filedialog.askopenfilenames()
-    external_bundles: list[bundle_v2.BundleV2] = []
+    external_bundles: list[bnd2.BundleV2] = []
     for external_file_name in external_file_names:
-        external_bundle = bundle_v2.BundleV2(external_file_name)
+        external_bundle = bnd2.BundleV2(external_file_name)
         external_bundle.load()    
         external_bundles.append(external_bundle)
 
     external_resource_ids = bundle.get_external_resource_ids()
-
-    external_resource_entries: list[bundle_v2.ResourceEntry] = []
     for external_resource_id in external_resource_ids:
         for external_bundle in external_bundles:
             external_resource_entry = external_bundle.get_resource_entry(external_resource_id)
             if external_resource_entry is not None:
-                external_resource_entries.append(external_resource_entry)
+                bundle.resource_entries.append(external_resource_entry)
                 break
         else:
             print(f"Cannot find external resource entry with ID {external_resource_id :08X}.")
-
-    for external_resource_entry in external_resource_entries:
-        bundle.resource_entries.append(external_resource_entry)
     
     for resource_entry in bundle.resource_entries:
         convert_resource_entry(bundle, resource_entry)
     
-    # bundle.save()
+    bundle.save()
     print("Done.")
 
 
