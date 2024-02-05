@@ -14,7 +14,7 @@ You will be prompted to choose a bundle which you want to convert.
 Then you can choose additional bundles which contain external resources.
 These resources will be added to the main bundle. Finally, the resource IDs will be randomized to avoid ID collisions.
 
-## Supported resource types:
+## Supported resource types
 - Texture (0)
 - Vertex Descriptor (10)
 - Renderable (12)
