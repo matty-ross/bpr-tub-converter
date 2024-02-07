@@ -10,9 +10,9 @@ A tool to convert bnd2 PC files from Burnout Paradise: The Ultimate Box to Burno
 cd .\src\
 python .\main.py
 ```
-You will be prompted to choose a bundle which you want to convert.
+You will be prompted to choose bundles which you want to convert.
 Then you can choose additional bundles which contain external resources.
-These resources will be added to the main bundle. Finally, the resource IDs will be randomized to avoid ID collisions.
+These resources will be added to the main bundles. Finally, the resource IDs will be randomized to avoid ID collisions.
 
 ## Supported resource types
 - Texture (0)
