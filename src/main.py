@@ -1,6 +1,7 @@
 import io
 import struct
 import random
+import copy
 import tkinter, tkinter.filedialog
 
 import bnd2
@@ -65,35 +66,43 @@ def convert_resource_entry(bundle: bnd2.BundleV2, resource_entry: bnd2.ResourceE
         return
 
 
-def main() -> None:
-    tkinter.Tk().withdraw()
-
-    file_name = tkinter.filedialog.askopenfilename()
-    bundle = bnd2.BundleV2(file_name)
-    bundle.load()
-    
-    external_file_names = tkinter.filedialog.askopenfilenames()
-    external_bundles: list[bnd2.BundleV2] = []
-    for external_file_name in external_file_names:
-        external_bundle = bnd2.BundleV2(external_file_name)
-        external_bundle.load()    
-        external_bundles.append(external_bundle)
-
+def convert_bundle(bundle: bnd2.BundleV2, external_bundles: list[bnd2.BundleV2]) -> None:
     external_resource_ids = bundle.get_external_resource_ids()
     for external_resource_id in external_resource_ids:
         for external_bundle in external_bundles:
             external_resource_entry = external_bundle.get_resource_entry(external_resource_id)
             if external_resource_entry is not None:
-                bundle.resource_entries.append(external_resource_entry)
+                bundle.resource_entries.append(copy.deepcopy(external_resource_entry))
                 break
         else:
             print(f"Cannot find external resource entry with ID {external_resource_id :08X}.")
     
     for resource_entry in bundle.resource_entries:
         convert_resource_entry(bundle, resource_entry)
+
+
+def main() -> None:
+    tkinter.Tk().withdraw()
+
+    file_names = tkinter.filedialog.askopenfilenames()
+    bundles: list[bnd2.BundleV2] = []
+    for file_name in file_names:
+        bundle = bnd2.BundleV2(file_name)
+        bundle.load()
+        bundles.append(bundle)
     
-    bundle.save()
-    print("Done.")
+    external_file_names = tkinter.filedialog.askopenfilenames()
+    external_bundles: list[bnd2.BundleV2] = []
+    for external_file_name in external_file_names:
+        external_bundle = bnd2.BundleV2(external_file_name)
+        external_bundle.load()
+        external_bundles.append(external_bundle)
+    
+    for bundle in bundles:
+        print(f"Converting bundle '{bundle.file_name}'...")
+        convert_bundle(bundle, external_bundles)
+        bundle.save()
+        print("Done.")
 
 
 if __name__ == '__main__':
