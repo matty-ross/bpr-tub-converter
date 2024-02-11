@@ -136,7 +136,7 @@ class Renderable:
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<L', 0))
 
-        meshes_offset = bnd2.BundleV2._align_offset(data.tell(), 0x10)
+        meshes_offset = bnd2.util.align_offset(data.tell(), 0x10)
         data.seek(meshes_offset)
         for _ in range(self.d3d11_renderable.meshes_count):
             data.write(struct.pack('<L', 0))
@@ -161,7 +161,7 @@ class Renderable:
         meshes_offstes = []
         import_index = 0
         for i, mesh in enumerate(self.d3d11_renderable.meshes):
-            mesh_offset = bnd2.BundleV2._align_offset(data.tell(), 0x10)
+            mesh_offset = bnd2.util.align_offset(data.tell(), 0x10)
             meshes_offstes.append(mesh_offset)
             data.seek(mesh_offset)
             for j in range(16):
