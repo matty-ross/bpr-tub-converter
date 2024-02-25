@@ -50,7 +50,7 @@ class Renderable:
         self.d3d11_renderable.version_number = self.d3d9_renderable.version_number
         self.d3d11_renderable.meshes_count = self.d3d9_renderable.meshes_count
         self.d3d11_renderable.flags = self.d3d9_renderable.flags
-        
+
         self.d3d11_renderable.index_buffer.usage = d3d11.Usage.DEFAULT
         self.d3d11_renderable.index_buffer.type = d3d11.BufferType.INDEX_BUFFER
         self.d3d11_renderable.index_buffer.data_offset = self.d3d9_renderable.index_buffer.data_offset
@@ -79,7 +79,7 @@ class Renderable:
 
     def _load(self) -> None:
         data = io.BytesIO(self.resource_entry.data[0])
-        
+
         data.seek(0x0)
         self.d3d9_renderable.bounding_sphere = struct.unpack('<ffff', data.read(4 * 4))
         self.d3d9_renderable.version_number = struct.unpack('<H', data.read(2))[0]
@@ -184,7 +184,7 @@ class Renderable:
                 self.resource_entry.import_entries[import_index].offset = data.tell()
                 import_index += 1
                 data.write(struct.pack('<L', 0))
-                
+
         data.seek(0x14)
         data.write(struct.pack('<L', meshes_offset))
         data.seek(0x20)

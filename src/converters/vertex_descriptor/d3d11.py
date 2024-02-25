@@ -169,6 +169,6 @@ class Element:
 class VertexDescriptor:
     elements_hash: int = None
     input_slots_hash: int = None
-    elements_count: int = None  
-    input_slots_count: int = None  
+    elements_count: int = None
+    input_slots_count: int = None
     elements: list[Element] = None

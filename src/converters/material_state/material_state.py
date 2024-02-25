@@ -184,7 +184,7 @@ class MaterialState:
         self.d3d9_material_state.rasterizer_state.multisample_antialias_enable = bool(struct.unpack('<L', data.read(4))[0])
         self.d3d9_material_state.rasterizer_state.srgb_write_enable = bool(struct.unpack('<L', data.read(4))[0])
         self.d3d9_material_state.rasterizer_state.antialiased_line_enable = bool(struct.unpack('<L', data.read(4))[0])
-    
+
 
     def _store(self) -> None:
         data = io.BytesIO()
@@ -208,11 +208,11 @@ class MaterialState:
             data.write(struct.pack('<L', dword))
         data.write(struct.pack('<ffff', *self.d3d11_material_state.blend_state.blend_factor))
         data.write(struct.pack('?', self.d3d11_material_state.blend_state.alpha_to_coverage_enable))
-        data.write(struct.pack('?', self.d3d11_material_state.blend_state.independent_blend_enable))        
+        data.write(struct.pack('?', self.d3d11_material_state.blend_state.independent_blend_enable))
         data.write(bytes(2)) # padding
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))
-        
+
         depth_stencil_state_offset = data.tell()
         data.write(struct.pack('<l', self.d3d11_material_state.depth_stencil_state.depth_function.value))
         data.write(struct.pack('<l', self.d3d11_material_state.depth_stencil_state.front_face_stencil_fail_operation.value))

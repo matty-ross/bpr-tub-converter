@@ -94,7 +94,7 @@ class Texture:
 
     def convert(self) -> None:
         self._load()
-        
+
         self.d3d11_texture.usage = d3d11.Usage.DEFAULT
         self.d3d11_texture.type = D3D9_TEXTURE_TYPE_TO_D3D11_TEXTURE_TYPE[self.d3d9_texture.type]
         self.d3d11_texture.data_offset = self.d3d9_texture.data_offset
@@ -124,10 +124,10 @@ class Texture:
         self.d3d9_texture.type = d3d9.TextureType(struct.unpack('b', data.read(1))[0])
         self.d3d9_texture.flags = struct.unpack('B', data.read(1))[0]
 
-    
+
     def _store(self) -> None:
         data = io.BytesIO()
-        
+
         data.seek(0x0)
         data.write(struct.pack('<L', 0))
         data.write(struct.pack('<l', self.d3d11_texture.usage.value))

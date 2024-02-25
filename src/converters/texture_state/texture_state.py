@@ -34,8 +34,8 @@ class TextureState:
         self.resource_entry = resource_entry
         self.d3d9_texture_state = d3d9.TextureState()
         self.d3d11_texture_state = d3d11.TextureState()
-    
-    
+
+
     def convert(self) -> None:
         self._load()
 
@@ -54,10 +54,10 @@ class TextureState:
 
         self._store()
 
-    
+
     def _load(self) -> None:
         data = io.BytesIO(self.resource_entry.data[0])
-        
+
         data.seek(0x0)
         self.d3d9_texture_state.sampler_state.address_mode_u = d3d9.TextureAddressMode(struct.unpack('<l', data.read(4))[0])
         self.d3d9_texture_state.sampler_state.address_mode_v = d3d9.TextureAddressMode(struct.unpack('<l', data.read(4))[0])
@@ -69,11 +69,11 @@ class TextureState:
         self.d3d9_texture_state.sampler_state.max_anisotropy = struct.unpack('<L', data.read(4))[0]
         self.d3d9_texture_state.sampler_state.mipmap_lod_bias = struct.unpack('<f', data.read(4))[0]
         self.d3d9_texture_state.sampler_state.border_color = struct.unpack('<L', data.read(4))[0]
-    
+
 
     def _store(self) -> None:
         data = io.BytesIO()
-        
+
         data.seek(0x0)
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.address_mode_u.value))
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.address_mode_v.value))

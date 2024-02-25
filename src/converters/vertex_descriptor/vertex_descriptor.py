@@ -133,7 +133,7 @@ class VertexDescriptor:
             usage = self.d3d9_vertex_descriptor.elements[i].usage
             usage_index = self.d3d9_vertex_descriptor.elements[i].usage_index
             map_index = self.d3d9_vertex_descriptor.elements[i].map_index
-            
+
             self.d3d11_vertex_descriptor.elements[i].semantic_name = D3D9_USAGE_TO_D3D11_SEMANTIC_NAME[usage] if usage is not None else D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_NAME[map_index]
             self.d3d11_vertex_descriptor.elements[i].semantic_index = usage_index if usage_index is not None else D3D9_MAP_INDEX_TO_D3D11_SEMANTIC_INDEX[map_index]
             self.d3d11_vertex_descriptor.elements[i].input_slot = self.d3d9_vertex_descriptor.elements[i].stream_number
@@ -142,7 +142,7 @@ class VertexDescriptor:
             self.d3d11_vertex_descriptor.elements[i].offset = self.d3d9_vertex_descriptor.elements[i].offset
             self.d3d11_vertex_descriptor.elements[i].instance_data_step_rate = 0
             self.d3d11_vertex_descriptor.elements[i].vertex_stride = self.d3d9_vertex_descriptor.elements[i].vertex_stride
-            
+
             self.d3d11_vertex_descriptor.elements_hash |= (1 << self.d3d11_vertex_descriptor.elements[i].semantic_name.value)
             if self.d3d11_vertex_descriptor.elements[i].input_slot_class == d3d11.InputClassification.PER_INSTANCE_DATA:
                 self.d3d11_vertex_descriptor.input_slots_hash |= (1 << self.d3d11_vertex_descriptor.elements[i].input_slot)
@@ -183,7 +183,7 @@ class VertexDescriptor:
         data.write(struct.pack('B', self.d3d11_vertex_descriptor.elements_count))
         data.write(struct.pack('B', self.d3d11_vertex_descriptor.input_slots_count))
         data.write(struct.pack('<H', 0))
-        
+
         for i, element in enumerate(self.d3d11_vertex_descriptor.elements):
             data.seek(0x10 + i * 0x14)
             data.write(struct.pack('b', element.semantic_name.value))
