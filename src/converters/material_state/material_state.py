@@ -123,7 +123,7 @@ class MaterialState:
         self.d3d11_material_state.rasterizer_state.depth_bias = int(self.d3d9_material_state.rasterizer_state.depth_bias)
         self.d3d11_material_state.rasterizer_state.depth_bias_clamp = 0.0
         self.d3d11_material_state.rasterizer_state.slope_scaled_depth_bias = self.d3d9_material_state.rasterizer_state.slope_scale_depth_bias
-        self.d3d11_material_state.rasterizer_state.depth_clip_enable = False
+        self.d3d11_material_state.rasterizer_state.depth_clip_enable = True
         self.d3d11_material_state.rasterizer_state.scissor_enable = self.d3d9_material_state.rasterizer_state.scissor_test_enable
         self.d3d11_material_state.rasterizer_state.multisample_enable = self.d3d9_material_state.rasterizer_state.multisample_antialias_enable
         self.d3d11_material_state.rasterizer_state.antialiased_line_enable = self.d3d9_material_state.rasterizer_state.antialiased_line_enable
@@ -154,6 +154,7 @@ class MaterialState:
         self.d3d9_material_state.blend_state.alpha_test_enable = bool(struct.unpack('<L', data.read(4))[0])
         self.d3d9_material_state.blend_state.alpha_function = d3d9.ComparsionFunction(struct.unpack('<l', data.read(4))[0])
         self.d3d9_material_state.blend_state.alpha_reference = struct.unpack('<L', data.read(4))[0]
+        _ = data.read(4)
         self.d3d9_material_state.blend_state.alpha_to_coverage_enable = bool(struct.unpack('<L', data.read(4))[0])
 
         data.seek(depth_stencil_state_offset)
