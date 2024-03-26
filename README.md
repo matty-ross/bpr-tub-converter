@@ -7,8 +7,7 @@ A tool to convert bnd2 PC files from Burnout Paradise: The Ultimate Box to Burno
 
 ## Usage
 ```
-cd .\src\
-python .\main.py
+python .\src\main.py
 ```
 You will be prompted to choose bundles which you want to convert.
 Then you can choose additional bundles which contain external resources.
