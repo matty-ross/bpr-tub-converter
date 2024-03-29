@@ -10,7 +10,7 @@ from converters.texture.texture import Texture
 from converters.vertex_descriptor.vertex_descriptor import VertexDescriptor
 from converters.renderable.renderable import Renderable
 from converters.texture_state.texture_state import TextureState
-from converters.material_state.material_state import MaterialState
+from converters.material_state.material_state import MaterialState, D3D9_MATERIAL_STATE_ID_TO_D3D11_MATERIAL_STATE_ID
 
 
 def convert_resource_entry(bundle: bnd2.BundleV2, resource_entry: bnd2.ResourceEntry) -> None:
@@ -53,6 +53,7 @@ def convert_resource_entry(bundle: bnd2.BundleV2, resource_entry: bnd2.ResourceE
         case 15:
             converter = MaterialState(resource_entry)
             converter.convert()
+            bundle.change_resource_id(resource_entry.id, D3D9_MATERIAL_STATE_ID_TO_D3D11_MATERIAL_STATE_ID[resource_entry.id])
 
         # Model
         case 42:
