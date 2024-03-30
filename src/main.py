@@ -53,6 +53,7 @@ def convert_resource_entry(bundle: bnd2.BundleV2, resource_entry: bnd2.ResourceE
         case 15:
             converter = MaterialState(resource_entry)
             converter.convert()
+            bundle.change_resource_id(resource_entry.id, new_id)
 
         # Model
         case 42:
