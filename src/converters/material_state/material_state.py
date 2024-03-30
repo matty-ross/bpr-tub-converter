@@ -1,7 +1,7 @@
 import bnd2
 
 
-D3D9_MATERIAL_STATE_ID_TO_D3D11_MATERIAL_STATE_ID = {
+D3D9_MATERIAL_STATE_TO_D3D11_MATERIAL_STATE = {
     0x10B0FA41: 0xCDDA46F0,
     0x15D559B5: 0x7E72A026,
     0x161E6D1F: 0x0BA364FE,
@@ -31,6 +31,9 @@ class MaterialState:
 
 
     def convert(self) -> None:
-        material_state_id = D3D9_MATERIAL_STATE_ID_TO_D3D11_MATERIAL_STATE_ID[self.resource_entry.id]
+        material_state_id = D3D9_MATERIAL_STATE_TO_D3D11_MATERIAL_STATE[self.resource_entry.id]
+
         with open(f'data/material_state/{material_state_id :08X}.bin', 'rb') as fp:
             self.resource_entry.data[0] = fp.read()
+
+        self.resource_entry.id = material_state_id
