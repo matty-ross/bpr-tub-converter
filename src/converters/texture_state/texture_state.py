@@ -20,7 +20,7 @@ D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE = {
     # d3d9.TextureFilterType.NONE:
     d3d9.TextureFilterType.POINT: d3d11.TextureFilterType.POINT,
     d3d9.TextureFilterType.LINEAR: d3d11.TextureFilterType.LINEAR,
-    # d3d9.TextureFilterType.ANISOTROPIC:
+    d3d9.TextureFilterType.ANISOTROPIC: d3d11.TextureFilterType.ANISOTROPIC,
     # d3d9.TextureFilterType.PYRAMIDAL_QUAD:
     # d3d9.TextureFilterType.GAUSSIAN_QUAD:
     # d3d9.TextureFilterType.CONVOLUTION_MONO:
@@ -41,16 +41,10 @@ class TextureState:
 
         self.d3d11_texture_state.sampler_state.address_mode_u = D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE[self.d3d9_texture_state.sampler_state.address_mode_u]
         self.d3d11_texture_state.sampler_state.address_mode_v = D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE[self.d3d9_texture_state.sampler_state.address_mode_v]
-        self.d3d11_texture_state.sampler_state.address_mode_w = D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE[self.d3d9_texture_state.sampler_state.address_mode_w]
         self.d3d11_texture_state.sampler_state.magnification_filter = D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE[self.d3d9_texture_state.sampler_state.magnification_filter]
         self.d3d11_texture_state.sampler_state.minification_filter = D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE[self.d3d9_texture_state.sampler_state.minification_filter]
-        self.d3d11_texture_state.sampler_state.mipmap_filter = D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE[self.d3d9_texture_state.sampler_state.mipmap_filter]
-        self.d3d11_texture_state.sampler_state.min_lod = struct.unpack('<f', b'\xFF\xFF\x7F\xFF')[0] # -FLT_MAX
-        self.d3d11_texture_state.sampler_state.max_lod = struct.unpack('<f', b'\xFF\xFF\x7F\x7F')[0] # FLT_MAX
         self.d3d11_texture_state.sampler_state.max_anisotropy = self.d3d9_texture_state.sampler_state.max_anisotropy
         self.d3d11_texture_state.sampler_state.mipmap_lod_bias = self.d3d9_texture_state.sampler_state.mipmap_lod_bias
-        self.d3d11_texture_state.sampler_state.comparsion_function = d3d11.CompasrionFunction.ALWAYS
-        self.d3d11_texture_state.sampler_state.use_border_color = self.d3d9_texture_state.sampler_state.border_color != 0x00000000
 
         self._store()
 
@@ -61,14 +55,14 @@ class TextureState:
         data.seek(0x0)
         self.d3d9_texture_state.sampler_state.address_mode_u = d3d9.TextureAddressMode(struct.unpack('<l', data.read(4))[0])
         self.d3d9_texture_state.sampler_state.address_mode_v = d3d9.TextureAddressMode(struct.unpack('<l', data.read(4))[0])
-        self.d3d9_texture_state.sampler_state.address_mode_w = d3d9.TextureAddressMode(struct.unpack('<l', data.read(4))[0])
+        _ = data.read(4)
         self.d3d9_texture_state.sampler_state.magnification_filter = d3d9.TextureFilterType(struct.unpack('<l', data.read(4))[0])
         self.d3d9_texture_state.sampler_state.minification_filter = d3d9.TextureFilterType(struct.unpack('<l', data.read(4))[0])
-        self.d3d9_texture_state.sampler_state.mipmap_filter = d3d9.TextureFilterType(struct.unpack('<l', data.read(4))[0])
-        self.d3d9_texture_state.sampler_state.max_mipmap_level = struct.unpack('<L', data.read(4))[0]
+        _ = data.read(4)
+        _ = data.read(4)
         self.d3d9_texture_state.sampler_state.max_anisotropy = struct.unpack('<L', data.read(4))[0]
         self.d3d9_texture_state.sampler_state.mipmap_lod_bias = struct.unpack('<f', data.read(4))[0]
-        self.d3d9_texture_state.sampler_state.border_color = struct.unpack('<L', data.read(4))[0]
+        _ = data.read(4)
 
 
     def _store(self) -> None:
@@ -77,16 +71,16 @@ class TextureState:
         data.seek(0x0)
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.address_mode_u.value))
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.address_mode_v.value))
-        data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.address_mode_w.value))
+        data.write(struct.pack('<l', 1))
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.magnification_filter.value))
         data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.minification_filter.value))
-        data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.mipmap_filter.value))
-        data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.min_lod))
-        data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.max_lod))
+        data.write(struct.pack('<l', 1))
+        data.write(b'\xFF\xFF\x7F\xFF')
+        data.write(b'\xFF\xFF\x7F\x7F')
         data.write(struct.pack('<L', self.d3d11_texture_state.sampler_state.max_anisotropy))
         data.write(struct.pack('<f', self.d3d11_texture_state.sampler_state.mipmap_lod_bias))
-        data.write(struct.pack('<l', self.d3d11_texture_state.sampler_state.comparsion_function.value))
-        data.write(struct.pack('?', self.d3d11_texture_state.sampler_state.use_border_color))
+        data.write(struct.pack('<l', -1))
+        data.write(struct.pack('?', False))
         data.write(bytes(3)) # padding
         data.write(struct.pack('<L', 1))
         data.write(struct.pack('<L', 0))

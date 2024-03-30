@@ -24,14 +24,10 @@ class TextureFilterType(Enum):
 class SamplerState:
     address_mode_u: TextureAddressMode = None
     address_mode_v: TextureAddressMode = None
-    address_mode_w: TextureAddressMode = None
     magnification_filter: TextureFilterType = None
     minification_filter: TextureFilterType = None
-    mipmap_filter: TextureFilterType = None
-    max_mipmap_level: int = None
     max_anisotropy: int = None
     mipmap_lod_bias: float = None
-    border_color: int = None
 
 
 @dataclass
