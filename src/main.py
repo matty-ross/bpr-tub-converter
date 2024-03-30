@@ -73,17 +73,6 @@ def convert_bundle(bundle: bnd2.BundleV2, external_bundles: list[bnd2.BundleV2])
     for resource_entry in bundle.resource_entries:
         convert_resource_entry(bundle, resource_entry)
 
-    indexes: list[int] = []
-    resource_ids = set()
-    for index, resource_entry in enumerate(bundle.resource_entries):
-        if resource_entry.id in resource_ids:
-            indexes.append(index)
-        else:
-            resource_ids.add(resource_entry.id)
-    for index in indexes:
-        bundle.resource_entries.pop(index)
-        print(f"Removed duplicate resource entry with ID {bundle.resource_entries[index].id :08X}.")
-
 
 def main() -> None:
     tkinter.Tk().withdraw()

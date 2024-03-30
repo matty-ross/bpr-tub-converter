@@ -31,6 +31,8 @@ class MaterialState:
 
 
     def convert(self) -> None:
+        # TODO: This may add duplicate resources to the bundle.
+
         material_state_id = D3D9_MATERIAL_STATE_TO_D3D11_MATERIAL_STATE[self.resource_entry.id]
 
         with open(f'data/material_state/{material_state_id :08X}.bin', 'rb') as fp:
