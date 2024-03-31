@@ -12,7 +12,6 @@ D3D9_TEXTURE_ADDRESS_MODE_TO_D3D11_TEXTURE_ADDRESS_MODE = {
     d3d9.TextureAddressMode.MIRROR: d3d11.TextureAddressMode.MIRROR,
     d3d9.TextureAddressMode.CLAMP: d3d11.TextureAddressMode.CLAMP,
     d3d9.TextureAddressMode.BORDER: d3d11.TextureAddressMode.BORDER,
-    d3d9.TextureAddressMode.MIRROR_ONCE: d3d11.TextureAddressMode.MIRROR_ONCE,
 }
 
 
@@ -21,9 +20,6 @@ D3D9_TEXTURE_FILTER_TYPE_TO_D3D11_TEXTURE_FILTER_TYPE = {
     d3d9.TextureFilterType.POINT: d3d11.TextureFilterType.POINT,
     d3d9.TextureFilterType.LINEAR: d3d11.TextureFilterType.LINEAR,
     d3d9.TextureFilterType.ANISOTROPIC: d3d11.TextureFilterType.ANISOTROPIC,
-    # d3d9.TextureFilterType.PYRAMIDAL_QUAD:
-    # d3d9.TextureFilterType.GAUSSIAN_QUAD:
-    # d3d9.TextureFilterType.CONVOLUTION_MONO:
 }
 
 

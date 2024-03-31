@@ -7,7 +7,6 @@ class TextureAddressMode(Enum):
     MIRROR = 2
     CLAMP = 3
     BORDER = 4
-    MIRROR_ONCE = 5
 
 
 class TextureFilterType(Enum):
@@ -15,9 +14,6 @@ class TextureFilterType(Enum):
     POINT = 1
     LINEAR = 2
     ANISOTROPIC = 3
-    PYRAMIDAL_QUAD = 6
-    GAUSSIAN_QUAD = 7
-    CONVOLUTION_MONO = 8
 
 
 @dataclass

@@ -7,7 +7,6 @@ class TextureAddressMode(Enum):
     MIRROR = 2
     CLAMP = 3
     BORDER = 4
-    MIRROR_ONCE = 5
 
 
 class TextureFilterType(Enum):
