@@ -84,8 +84,8 @@ class Renderable:
             _ = data.read(4)
             _ = data.read(4)
             mesh.start_index = struct.unpack('<L', data.read(4))[0]
-            mesh.vertices_count = struct.unpack('<L', data.read(4))[0]
-            mesh.minimum_vertex_index = struct.unpack('<L', data.read(4))[0]
+            _ = data.read(4)
+            _ = data.read(4)
             mesh.primitives_count = struct.unpack('<L', data.read(4))[0]
             _ = data.read(4)
             mesh.vertex_descriptors_count = struct.unpack('B', data.read(1))[0]

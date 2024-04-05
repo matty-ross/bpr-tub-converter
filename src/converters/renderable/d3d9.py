@@ -24,8 +24,6 @@ class VertexBuffer:
 class Mesh:
     transformation: tuple[float] = None
     start_index: int = None
-    vertices_count: int = None
-    minimum_vertex_index: int = None
     primitives_count: int = None
     vertex_descriptors_count: int = None
     flags: int = None
