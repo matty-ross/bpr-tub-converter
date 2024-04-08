@@ -26,7 +26,6 @@ class CullMode(Enum):
 class BlendState:
     source_blend: Blend = None
     destination_blend: Blend = None
-    color_write_enable: int = None
     alpha_blend_enable: bool = None
     alpha_to_coverage_enable: bool = None
 

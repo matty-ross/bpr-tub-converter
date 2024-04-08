@@ -29,6 +29,30 @@ D3D9_CULL_MODE_TO_D3D11_CULL_MODE = {
 }
 
 
+# ¯\_(ツ)_/¯
+# There is no obvious way how to get the desired bool value
+D3D9_MATERIAL_STATE_ID_TO_D3D11_ALPHA_TO_COVERAGE_ENABLE = {
+    0x10B0FA41: False,
+    0x15D559B5: True,
+    0x161E6D1F: True,
+    0x28943600: True,
+    0x2D65FDF3: True,
+    0x3BC485AF: True,
+    0x55EFF8AF: False,
+    0x56825599: True,
+    0x5F9EF983: True,
+    0x716C1EF4: False,
+    0x81D73454: False,
+    0x82AB007B: True,
+    0x83026157: True,
+    0x89722C1C: True,
+    0xA02EBF50: False,
+    0xA3AA49C3: True,
+    0xB9A9D0E4: True,
+    0xF9D639DA: False,
+}
+
+
 class MaterialState:
 
     def __init__(self, resource_entry: bnd2.ResourceEntry):
@@ -44,8 +68,7 @@ class MaterialState:
         self.d3d11_material_state.blend_state.blend_enable = self.d3d9_material_state.blend_state.alpha_blend_enable
         self.d3d11_material_state.blend_state.source_blend = D3D9_BLEND_TO_D3D11_BLEND[self.d3d9_material_state.blend_state.source_blend]
         self.d3d11_material_state.blend_state.destination_blend = D3D9_BLEND_TO_D3D11_BLEND[self.d3d9_material_state.blend_state.destination_blend]
-        self.d3d11_material_state.blend_state.color_write_mask = self.d3d9_material_state.blend_state.color_write_enable
-        self.d3d11_material_state.blend_state.alpha_to_coverage_enable = self.d3d9_material_state.blend_state.alpha_to_coverage_enable
+        self.d3d11_material_state.blend_state.alpha_to_coverage_enable = D3D9_MATERIAL_STATE_ID_TO_D3D11_ALPHA_TO_COVERAGE_ENABLE[self.resource_entry.id]
 
         self.d3d11_material_state.depth_stencil_state.depth_write_enable = self.d3d9_material_state.depth_stencil_state.z_write_enable
 
@@ -66,8 +89,7 @@ class MaterialState:
         dword = struct.unpack('<L', data.read(4))[0]
         self.d3d9_material_state.blend_state.source_blend = d3d9.Blend((dword >> 0) & (2 ** 5 - 1))
         self.d3d9_material_state.blend_state.destination_blend = d3d9.Blend((dword >> 8) & (2 ** 8 - 1))
-        self.d3d9_material_state.blend_state.color_write_enable = struct.unpack('<L', data.read(4))[0]
-        _ = data.read(3 * 4)
+        _ = data.read(4 * 4)
         _ = data.read(4 * 4)
         self.d3d9_material_state.blend_state.alpha_blend_enable = bool(struct.unpack('<L', data.read(4))[0])
         _ = data.read(4)
@@ -124,7 +146,7 @@ class MaterialState:
         dword |= 5 << 14
         dword |= 6 << 19
         dword |= 1 << 24
-        dword |= (self.d3d11_material_state.blend_state.color_write_mask & (2 ** 4 - 1)) << 27
+        dword |= 0xF << 27
         data.write(struct.pack('<L', dword))
         for _ in range(7):
             data.write(struct.pack('<L', 0x7931498A))

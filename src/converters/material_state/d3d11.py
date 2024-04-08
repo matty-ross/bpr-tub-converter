@@ -27,7 +27,6 @@ class BlendState:
     blend_enable: bool = None
     source_blend: Blend = None
     destination_blend: Blend = None
-    color_write_mask: int = None
     alpha_to_coverage_enable: bool = None
 
 
