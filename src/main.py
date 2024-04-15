@@ -59,15 +59,6 @@ def convert_resource_entry(bundle: bnd2.BundleV2, resource_entry: bnd2.ResourceE
             bundle.change_resource_id(resource_entry.id, new_id)
 
 
-def load_external_bundles(external_file_names: list[str]):
-    external_bundles: list[bnd2.BundleV2] = []
-    for external_file_name in external_file_names:
-        external_bundle = bnd2.BundleV2(external_file_name)
-        external_bundle.load()
-        external_bundles.append(external_bundle)
-    return external_bundles
-
-
 def convert_bundle(bundle: bnd2.BundleV2, external_bundles: list[bnd2.BundleV2]) -> None:
     external_resource_ids = bundle.get_external_resource_ids()
     for external_resource_id in external_resource_ids:
@@ -81,6 +72,15 @@ def convert_bundle(bundle: bnd2.BundleV2, external_bundles: list[bnd2.BundleV2])
 
     for resource_entry in bundle.resource_entries:
         convert_resource_entry(bundle, resource_entry)
+
+
+def load_external_bundles(external_file_names: list[str]):
+    external_bundles: list[bnd2.BundleV2] = []
+    for external_file_name in external_file_names:
+        external_bundle = bnd2.BundleV2(external_file_name)
+        external_bundle.load()
+        external_bundles.append(external_bundle)
+    return external_bundles
 
 
 def main() -> None:
